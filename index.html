@@ -3,26 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CineZenix XYZ - Watch Online & Fast Download HD/4K Movies</title>
+  <title>CineZenix XYZ - Watch Online & Fast Download HD / FHD / 4K Movies</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e50914'/%3E%3Ctext x='50' y='67' font-family='Arial,sans-serif' font-size='48' font-weight='900' fill='%23ffffff' text-anchor='middle'%3ECZ%3C/text%3E%3C/svg%3E" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background-color: #0b0b0b; color: #e5e5e5; font-family: 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; }
     a { text-decoration: none; color: inherit; }
 
     /* Header */
-    .header { background: linear-gradient(180deg, #161616 0%, #0f0f0f 100%); border-bottom: 2px solid #e50914; padding: 14px 16px; text-align: center; position: sticky; top: 0; z-index: 100; cursor: pointer; }
-    .logo { font-size: 24px; font-weight: 900; letter-spacing: 1.5px; color: #ffffff; text-transform: uppercase; }
+    .header { background: linear-gradient(180deg, #161616 0%, #0f0f0f 100%); border-bottom: 2px solid #e50914; padding: 12px 16px; text-align: center; position: sticky; top: 0; z-index: 100; cursor: pointer; }
+    .logo-wrap { display: inline-flex; align-items: center; gap: 8px; justify-content: center; }
+    .logo-icon { background: #e50914; color: #fff; font-weight: 900; font-size: 16px; padding: 4px 8px; border-radius: 6px; letter-spacing: 0.5px; }
+    .logo { font-size: 23px; font-weight: 900; letter-spacing: 1.5px; color: #ffffff; text-transform: uppercase; }
     .logo span { color: #e50914; }
     .tagline { font-size: 11.5px; color: #999; margin-top: 2px; }
 
-    /* Search Bar */
-    .search-wrap { max-width: 600px; margin: 14px auto 6px; padding: 0 12px; }
+    /* Top Social Bar */
+    .social-bar { display: flex; justify-content: center; gap: 8px; padding: 8px 12px; background: #121212; border-bottom: 1px solid #222; flex-wrap: wrap; }
+    .soc-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 13px; border-radius: 20px; font-size: 12.5px; font-weight: bold; color: #fff; }
+    .tg-pill { background: #229ED9; }
+    .wa-pill { background: #25D366; color: #052e16; }
+
+    /* Search & Filter Section */
+    .search-wrap { max-width: 720px; margin: 12px auto 6px; padding: 0 12px; }
     .search-box { display: flex; background: #1a1a1a; border: 1px solid #333; border-radius: 25px; overflow: hidden; }
     .search-input { flex: 1; background: transparent; border: none; color: #fff; padding: 11px 16px; font-size: 14px; outline: none; }
     .search-btn { background: #e50914; color: #fff; border: none; padding: 0 18px; font-weight: bold; cursor: pointer; font-size: 14px; }
 
+    .filter-row { display: flex; gap: 8px; margin-top: 10px; justify-content: center; flex-wrap: wrap; }
+    .filter-select { background: #181818; color: #e5e5e5; border: 1px solid #333; padding: 7px 12px; border-radius: 20px; font-size: 12.5px; outline: none; cursor: pointer; }
+    .filter-select:focus { border-color: #e50914; }
+
     /* Container */
-    .container { max-width: 960px; margin: 16px auto; padding: 0 12px; }
+    .container { max-width: 960px; margin: 14px auto; padding: 0 12px; }
 
     /* Homepage 2-Column Grid */
     .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -32,7 +45,8 @@
     .card:hover { transform: translateY(-3px); border-color: #e50914; }
     .thumb-wrap { position: relative; width: 100%; padding-top: 145%; background: #1e1e1e; }
     .thumb { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-    .badge { position: absolute; top: 8px; left: 8px; background: rgba(229, 9, 20, 0.92); color: #fff; font-size: 10px; font-weight: bold; padding: 3px 7px; border-radius: 4px; }
+    .badge { position: absolute; top: 8px; left: 8px; background: rgba(229, 9, 20, 0.94); color: #fff; font-size: 10.5px; font-weight: bold; padding: 3px 8px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.6); }
+    .year-badge { position: absolute; top: 8px; right: 8px; background: rgba(0, 0, 0, 0.82); color: #ffcc00; border: 1px solid #444; font-size: 10.5px; font-weight: bold; padding: 2px 7px; border-radius: 4px; }
     .card-title { padding: 10px 8px; font-size: 13.5px; font-weight: 600; color: #f0f0f0; text-align: center; line-height: 1.4; }
 
     /* Single Movie Page */
@@ -43,6 +57,14 @@
     .poster-box img { max-width: 240px; width: 100%; border-radius: 8px; border: 2px solid #2c2c2c; }
     .info-box { background: #181818; border: 1px solid #2b2b2b; border-radius: 8px; padding: 14px; margin-bottom: 18px; font-size: 14px; line-height: 1.8; }
     .info-box h2 { color: #ffcc00; font-size: 18px; text-align: center; margin-bottom: 10px; border-bottom: 1px dashed #3a3a3a; padding-bottom: 8px; }
+
+    /* Trailer Box */
+    .trailer-box { margin-bottom: 18px; background: #161616; border: 1px solid #333; border-radius: 8px; padding: 12px; text-align: center; }
+    .trailer-frame { position: relative; width: 100%; padding-top: 56.25%; border-radius: 6px; overflow: hidden; margin-top: 8px; background: #000; }
+    .trailer-frame iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .yt-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #ff0000; color: #fff; font-weight: bold; padding: 9px 16px; border-radius: 6px; font-size: 13.5px; margin-top: 10px; }
+
+    /* Screenshots */
     .ss-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
     .ss-grid img { width: 100%; border-radius: 6px; border: 1px solid #333; }
 
@@ -51,15 +73,32 @@
     .pj-box { background: #1a1214; border: 1px solid #e50914; }
     .dw-box { background: #101924; border: 1px solid #0088ff; }
     .btn-link { display: block; color: #fff; font-weight: bold; padding: 11px; border-radius: 6px; margin-bottom: 8px; font-size: 14.5px; }
+    .btn-link:last-child { margin-bottom: 0; }
     .btn-pj { background: linear-gradient(90deg, #b80710, #e50914); }
     .btn-pj-4k { background: linear-gradient(90deg, #ff512f, #dd2476); border: 1px solid #ffcc00; }
     .btn-dw { background: linear-gradient(90deg, #0066cc, #0099ff); }
     .btn-dw-4k { background: linear-gradient(90deg, #0052d4, #4364f7, #6fb1fc); border: 1px solid #ffcc00; }
 
-    /* App Install Box */
+    /* Tutorial Box */
+    .tut-box { background: #181610; border: 1px solid #f59e0b; border-radius: 8px; padding: 14px; margin-bottom: 16px; text-align: center; }
+    .tut-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    @media (max-width: 480px) { .tut-grid { grid-template-columns: 1fr; } }
+    .tut-btn { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; color: #fff; }
+    .tut-pj { background: #991b1b; border: 1px solid #ef4444; }
+    .tut-dw { background: #1e3a8a; border: 1px solid #3b82f6; }
+
+    /* App Install & Community Box */
     .app-box { background: #1a1a1a; border: 1px dashed #ffcc00; border-radius: 8px; padding: 14px; text-align: center; }
-    .app-btns { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 10px; }
-    .app-btn { flex: 1; min-width: 210px; background: #242424; color: #fff; padding: 10px; border-radius: 6px; font-size: 13.5px; font-weight: bold; }
+    .app-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    @media (max-width: 480px) { .app-btns { grid-template-columns: 1fr; } }
+    .app-btn { display: flex; align-items: center; justify-content: center; gap: 6px; background: #242424; color: #fff; padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; }
+
+    /* Notification Banner */
+    .notif-banner { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 440px; background: #1c1c1c; border: 1px solid #e50914; border-radius: 10px; padding: 12px 14px; display: none; align-items: center; justify-content: space-between; gap: 10px; z-index: 999; box-shadow: 0 8px 25px rgba(0,0,0,0.85); }
+    .notif-text { font-size: 12.5px; color: #eee; }
+    .notif-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .notif-allow { background: #e50914; color: #fff; border: none; padding: 7px 12px; border-radius: 5px; font-size: 12px; font-weight: bold; cursor: pointer; }
+    .notif-close { background: #333; color: #bbb; border: none; padding: 7px 9px; border-radius: 5px; font-size: 12px; cursor: pointer; }
 
     /* Footer */
     .footer { background: #080808; border-top: 1px solid #1f1f1f; text-align: center; padding: 18px 12px; margin-top: 30px; font-size: 12.5px; color: #777; }
@@ -70,15 +109,62 @@
 
   <!-- Header -->
   <header class="header" id="homeHeader">
-    <div class="logo">CINE<span>ZENIX</span> XYZ</div>
-    <div class="tagline">Watch Online &amp; Fast Download HD / 4K Movies</div>
+    <div class="logo-wrap">
+      <span class="logo-icon">CZ</span>
+      <div class="logo">CINE<span>ZENIX</span> XYZ</div>
+    </div>
+    <div class="tagline">Watch Online &amp; Fast Download HD / FHD / 4K Movies</div>
   </header>
 
-  <!-- Search Bar -->
+  <!-- Permanent Social Links -->
+  <div class="social-bar">
+    <a href="https://t.me/Cinezenix" target="_blank" rel="nofollow noopener" class="soc-pill tg-pill">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.96-.75 3.78-1.65 6.31-2.74 7.58-3.27 3.61-1.51 4.35-1.77 4.84-1.78.11 0 .35.03.5.16.13.1.17.24.18.34.02.07.02.21 0 .33z"/></svg>
+      Join Telegram
+    </a>
+    <a href="https://whatsapp.com/channel/0029VajHSN9FnSz78ivaD61V" target="_blank" rel="nofollow noopener" class="soc-pill wa-pill">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 2c-5.516 0-9.969 4.453-9.969 9.969 0 1.758.459 3.473 1.331 4.986L2 22l5.197-1.363a9.93 9.93 0 0 0 4.834 1.25h.004c5.515 0 9.968-4.453 9.968-9.969 0-2.663-1.037-5.167-2.92-7.05A9.904 9.904 0 0 0 12.031 2zm5.821 14.129c-.246.693-1.433 1.325-1.985 1.408-.506.076-1.147.108-1.852-.116-.428-.136-.977-.318-1.68-.622-2.955-1.276-4.885-4.252-5.032-4.448-.147-.196-1.202-1.599-1.202-3.05 0-1.451.761-2.164 1.031-2.459.27-.295.589-.369.786-.369.196 0 .393.002.564.01.181.009.424-.069.663.506.246.59.835 2.038.909 2.186.074.147.123.319.025.516-.098.196-.147.319-.295.491-.147.172-.31.384-.442.516-.147.147-.301.307-.129.602.172.295.764 1.26 1.64 2.041 1.127 1.005 2.077 1.317 2.372 1.464.295.147.467.123.639-.074.172-.196.737-.86.933-1.155.196-.295.393-.246.663-.147.27.098 1.719.811 2.014.958.295.147.491.221.564.344.074.123.074.712-.172 1.405z"/></svg>
+      WhatsApp Channel
+    </a>
+  </div>
+
+  <!-- Search & Filters -->
   <div class="search-wrap" id="searchSection">
     <div class="search-box">
       <input type="text" id="searchInput" class="search-input" placeholder="Search movie or video name..." />
       <button class="search-btn" id="searchBtn">Search</button>
+    </div>
+    <div class="filter-row">
+      <select id="yearFilter" class="filter-select">
+        <option value="">📅 All Years</option>
+        <option value="2026">2026</option>
+        <option value="2025">2025</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+        <option value="2021">2021</option>
+        <option value="2020">2020</option>
+      </select>
+      <select id="langFilter" class="filter-select">
+        <option value="">🗣️ All Languages</option>
+        <option value="Hindi">Hindi</option>
+        <option value="English">English</option>
+        <option value="Dual Audio">Dual Audio</option>
+        <option value="Tamil">Tamil</option>
+        <option value="Telugu">Telugu</option>
+        <option value="Malayalam">Malayalam</option>
+        <option value="Korean">Korean</option>
+        <option value="Punjabi">Punjabi</option>
+        <option value="Chinese">Chinese</option>
+        <option value="Bhojpuri">Bhojpuri</option>
+      </select>
+      <select id="qualFilter" class="filter-select">
+        <option value="">🎞️ All Qualities</option>
+        <option value="4K">4K</option>
+        <option value="FHD">FHD (1080p)</option>
+        <option value="HD">HD (720p)</option>
+        <option value="HDTS">HDTS</option>
+      </select>
     </div>
   </div>
 
@@ -86,6 +172,15 @@
   <main class="container" id="app">
     <p style="text-align:center; color:#888; padding:40px 0;">Loading movies...</p>
   </main>
+
+  <!-- Notification Permission Banner -->
+  <div class="notif-banner" id="notifBanner">
+    <div class="notif-text">🔔 <strong>CineZenix XYZ:</strong> नई मूवीज के अलर्ट पाने के लिए नोटिफिकेशन Allow करें!</div>
+    <div class="notif-actions">
+      <button class="notif-allow" id="allowNotifBtn">Allow</button>
+      <button class="notif-close" id="closeNotifBtn">✕</button>
+    </div>
+  </div>
 
   <!-- Footer -->
   <footer class="footer">
@@ -114,7 +209,35 @@
     const appEl = document.getElementById("app");
     const searchSection = document.getElementById("searchSection");
 
-    // Listen to Realtime Database
+    // Notification Permission
+    if ("Notification" in window && Notification.permission === "default" && !localStorage.getItem("cz_notif_dismissed")) {
+      setTimeout(() => {
+        document.getElementById("notifBanner").style.display = "flex";
+      }, 2500);
+    }
+
+    document.getElementById("allowNotifBtn").addEventListener("click", async () => {
+      document.getElementById("notifBanner").style.display = "none";
+      const perm = await Notification.requestPermission();
+      if (perm === "granted") {
+        new Notification("CineZenix XYZ", { body: "Notifications Enabled! अब आपको नई मूवीज के अपडेट मिलेंगे।" });
+      }
+    });
+
+    document.getElementById("closeNotifBtn").addEventListener("click", () => {
+      document.getElementById("notifBanner").style.display = "none";
+      localStorage.setItem("cz_notif_dismissed", "1");
+    });
+
+    // Safe YouTube ID Extractor
+    function getYouTubeEmbed(url) {
+      if (!url) return "";
+      const regExp = /(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+      const match = url.match(regExp);
+      return match ? `https://www.youtube.com/embed/${match[1]}?rel=0` : "";
+    }
+
+    // Load Movies from Realtime Database
     const moviesRef = ref(db, "movies");
     onValue(moviesRef, (snapshot) => {
       const data = snapshot.val();
@@ -129,7 +252,7 @@
 
       const hash = window.location.hash.replace("#", "");
       if (hash) openMovie(hash);
-      else renderGrid(ALL_MOVIES);
+      else applyFilters();
     }, (error) => {
       appEl.innerHTML = `<p style="text-align:center; color:#ff4d4d; padding:30px;">Database Error: ${error.message}</p>`;
     });
@@ -137,13 +260,13 @@
     function renderGrid(list) {
       searchSection.style.display = "block";
       if (list.length === 0) {
-        appEl.innerHTML = `<p style="text-align:center; color:#888; padding:40px 0;">अभी कोई मूवी उपलब्ध नहीं है। Admin Panel से अपनी पहली मूवी जोड़ें!</p>`;
+        appEl.innerHTML = `<p style="text-align:center; color:#888; padding:40px 0;">कोई मूवी नहीं मिली। फिल्टर बदलें या Admin Panel से नई मूवी जोड़ें।</p>`;
         return;
       }
       appEl.innerHTML = `<div class="grid">${list.map(m => `
         <div class="card" data-id="${m.id}">
           <div class="thumb-wrap">
-            <span class="badge">${m.badge || '4K / HD'}</span>
+            <span class="badge">${m.badge \vert{}\vert{} 'HD'}</span>${m.year ? `<span class="year-badge">${m.year}</span>` : ''}
             <img class="thumb" src="${m.poster}" alt="${m.title}" loading="lazy" />
           </div>
           <div class="card-title">${m.title}</div>
@@ -163,9 +286,22 @@
       history.pushState({ id }, "", "#" + id);
 
       const screenshotsHTML = (m.screenshots || []).filter(s => s && s.trim() !== "").map(s => `<img src="${s}" loading="lazy" />`).join("");
-
+      const embedUrl = getYouTubeEmbed(m.trailer);
       const hasPJ = m.pj480 || m.pj720 || m.pj1080 || m.pj4k;
       const hasDW = m.dw480 || m.dw720 || m.dw1080 || m.dw4k;
+
+      let trailerHTML = "";
+      if (m.trailer && m.trailer.trim() !== "") {
+        trailerHTML = `
+          <div class="trailer-box">
+            <strong style="color:#ff3b30; font-size:14.5px;">🎬 OFFICIAL TRAILER</strong>
+            ${embedUrl ? `<div class="trailer-frame"><iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>` : ''}
+            <a href="${m.trailer}" target="_blank" rel="nofollow noopener" class="yt-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              Watch Trailer on YouTube
+            </a>
+          </div>`;
+      }
 
       appEl.innerHTML = `
         <div class="movie-detail">
@@ -173,10 +309,13 @@
           <div class="poster-box"><img src="${m.poster}" alt="${m.title}" /></div>
           <div class="info-box">
             <h2>${m.title}</h2>
-            <div><strong style="color:#00d2ff;">🗣️ Language & Rating:</strong> ${m.language || 'Hindi Dubbed'}</div>
-            <div><strong style="color:#00d2ff;">🎞️ Available Quality:</strong> 480p | 720p | 1080p | 4K Ultra HD</div>
+            ${m.year ? `<div><strong style="color:#00d2ff;">📅 Release Year:</strong> ${m.year}</div>` : ''}
+            <div><strong style="color:#00d2ff;">🗣️ Language & Rating:</strong> ${m.language || 'Hindi'}</div>
+            <div><strong style="color:#00d2ff;">🎞️ Quality:</strong> ${m.badge || 'HD / FHD / 4K'}</div>
             ${m.story ? `<div style="margin-top:8px; padding-top:8px; border-top:1px solid #2a2a2a; color:#bbb;"><strong style="color:#ffcc00;">📝 Storyline:</strong> ${m.story}</div>` : ''}
           </div>
+
+          ${trailerHTML}
 
           ${screenshotsHTML ? `<h3 style="text-align:center; color:#ff4d4d; font-size:15px; margin-bottom:10px;">📸 SCREENSHOTS</h3><div class="ss-grid">${screenshotsHTML}</div>` : ''}
 
@@ -185,7 +324,7 @@
             <h3 style="color:#ff3b30; margin-bottom:12px; font-size:16px;">▶️ WATCH ONLINE (PlayerJet Server)</h3>
             ${m.pj480 ? `<a href="${m.pj480}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj">▶️ Watch Online 480p [PlayerJet]</a>` : ''}
             ${m.pj720 ? `<a href="${m.pj720}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj">▶️ Watch Online 720p HD [PlayerJet]</a>` : ''}
-            ${m.pj1080 ? `<a href="${m.pj1080}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj">▶️ Watch Online 1080p Full HD [PlayerJet]</a>` : ''}
+            ${m.pj1080 ? `<a href="${m.pj1080}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj">▶️ Watch Online 1080p FHD [PlayerJet]</a>` : ''}
             ${m.pj4k ? `<a href="${m.pj4k}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj-4k">🔥 Watch Online 4K Ultra HD [PlayerJet]</a>` : ''}
           </div>` : ''}
 
@@ -194,15 +333,31 @@
             <h3 style="color:#00b4ff; margin-bottom:12px; font-size:16px;">⬇️ FAST DOWNLOAD (Diskwala Server)</h3>
             ${m.dw480 ? `<a href="${m.dw480}" target="_blank" rel="nofollow noopener" class="btn-link btn-dw">⬇️ Download 480p - Diskwala</a>` : ''}
             ${m.dw720 ? `<a href="${m.dw720}" target="_blank" rel="nofollow noopener" class="btn-link btn-dw">⬇️ Download 720p HD - Diskwala</a>` : ''}
-            ${m.dw1080 ? `<a href="${m.dw1080}" target="_blank" rel="nofollow noopener" class="btn-link btn-dw">⬇️ Download 1080p Full HD - Diskwala</a>` : ''}
+            ${m.dw1080 ? `<a href="${m.dw1080}" target="_blank" rel="nofollow noopener" class="btn-link btn-dw">⬇️ Download 1080p FHD - Diskwala</a>` : ''}
             ${m.dw4k ? `<a href="${m.dw4k}" target="_blank" rel="nofollow noopener" class="btn-link btn-dw-4k">🔥 Download 4K Ultra HD - Diskwala</a>` : ''}
           </div>` : ''}
 
+          <!-- Permanent Video Tutorials -->
+          <div class="tut-box">
+            <p style="color:#fbbf24; font-weight:bold; font-size:13.5px;">🎥 लिंक से वीडियो कैसे प्ले या डाउनलोड करें? (Video Tutorial देखें)</p>
+            <div class="tut-grid">
+              <a href="https://drive.google.com/file/d/13SEVOuoGSFHqyxzsuXg8VVN5mtpYjyIE/view?usp=drivesdk" target="_blank" rel="nofollow noopener" class="tut-btn tut-pj">
+                ▶️ How to Open PlayerJet Link
+              </a>
+              <a href="https://drive.google.com/file/d/1kKRCu5x12qzZfI-ut_ohSrdhAbHMKjw5/view?usp=drivesdk" target="_blank" rel="nofollow noopener" class="tut-btn tut-dw">
+                ⬇️ How to Open Diskwala Link
+              </a>
+            </div>
+          </div>
+
+          <!-- Permanent App Install & Community Links -->
           <div class="app-box">
-            <p style="color:#ffcc00; font-weight:bold; font-size:13.5px;">📲 वीडियो प्ले या डाउनलोड करने के लिए पहले नीचे दिए गए ऐप्स इंस्टॉल करें:</p>
+            <p style="color:#ffcc00; font-weight:bold; font-size:13.5px;">📲 जरूरी ऐप्स इंस्टॉल करें और हमारे चैनल से जुड़ें:</p>
             <div class="app-btns">
               <a href="https://play.google.com/store/apps/details?id=com.rs.playerjet" target="_blank" rel="nofollow noopener" class="app-btn" style="border:1px solid #ff3b30;">📲 Install PlayerJet App</a>
               <a href="https://play.google.com/store/apps/details?id=com.diskwalaapp" target="_blank" rel="nofollow noopener" class="app-btn" style="border:1px solid #00a8ff;">📲 Install Diskwala App</a>
+              <a href="https://t.me/Cinezenix" target="_blank" rel="nofollow noopener" class="app-btn" style="border:1px solid #229ED9; color:#38bdf8;">✈️ Join Telegram Channel</a>
+              <a href="https://whatsapp.com/channel/0029VajHSN9FnSz78ivaD61V" target="_blank" rel="nofollow noopener" class="app-btn" style="border:1px solid #25D366; color:#4ade80;">💬 Join WhatsApp Channel</a>
             </div>
           </div>
         </div>
@@ -213,22 +368,39 @@
     function showHome() {
       history.pushState({}, "", window.location.pathname);
       document.getElementById("searchInput").value = "";
+      document.getElementById("yearFilter").value = "";
+      document.getElementById("langFilter").value = "";
+      document.getElementById("qualFilter").value = "";
       renderGrid(ALL_MOVIES);
     }
 
-    function filterMovies() {
-      const q = document.getElementById("searchInput").value.toLowerCase();
-      renderGrid(ALL_MOVIES.filter(m => m.title.toLowerCase().includes(q)));
+    function applyFilters() {
+      const q = document.getElementById("searchInput").value.toLowerCase().trim();
+      const y = document.getElementById("yearFilter").value;
+      const l = document.getElementById("langFilter").value.toLowerCase();
+      const ql = document.getElementById("qualFilter").value.toUpperCase();
+
+      const filtered = ALL_MOVIES.filter(m => {
+        const matchText = !q || (m.title && m.title.toLowerCase().includes(q));
+        const matchYear = !y || String(m.year || "") === y || (m.title && m.title.includes(y));
+        const matchLang = !l || (m.language && m.language.toLowerCase().includes(l));
+        const matchQual = !ql || (m.badge && m.badge.toUpperCase().includes(ql));
+        return matchText && matchYear && matchLang && matchQual;
+      });
+      renderGrid(filtered);
     }
 
     document.getElementById("homeHeader").addEventListener("click", showHome);
-    document.getElementById("searchInput").addEventListener("keyup", filterMovies);
-    document.getElementById("searchBtn").addEventListener("click", filterMovies);
+    document.getElementById("searchInput").addEventListener("keyup", applyFilters);
+    document.getElementById("searchBtn").addEventListener("click", applyFilters);
+    document.getElementById("yearFilter").addEventListener("change", applyFilters);
+    document.getElementById("langFilter").addEventListener("change", applyFilters);
+    document.getElementById("qualFilter").addEventListener("change", applyFilters);
 
     window.addEventListener("popstate", () => {
       const hash = window.location.hash.replace("#", "");
       if (hash) openMovie(hash);
-      else renderGrid(ALL_MOVIES);
+      else applyFilters();
     });
   </script>
 </body>
