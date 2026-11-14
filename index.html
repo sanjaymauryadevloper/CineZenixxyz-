@@ -3,11 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#e50914" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>CineZenix XYZ - Watch Online & Fast Download HD / FHD / 4K Movies & Web Series</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e50914'/%3E%3Ctext x='50' y='67' font-family='Arial,sans-serif' font-size='48' font-weight='900' fill='%23ffffff' text-anchor='middle'%3ECZ%3C/text%3E%3C/svg%3E" />
+  <!-- Dynamic PWA Manifest for Add to Home Screen / Install App -->
+  <link rel="manifest" id="pwaManifest" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background-color: #0b0b0b; color: #e5e5e5; font-family: 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; }
+    body { background-color: #0b0b0b; color: #e5e5e5; font-family: 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; padding-bottom: 70px; }
     a { text-decoration: none; color: inherit; }
 
     /* Header */
@@ -18,52 +23,59 @@
     .logo span { color: #e50914; }
     .tagline { font-size: 11.5px; color: #999; margin-top: 2px; }
 
-    /* Top Social Bar */
-    .social-bar { display: flex; justify-content: center; gap: 8px; padding: 8px 12px; background: #121212; border-bottom: 1px solid #222; flex-wrap: wrap; }
-    .soc-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 13px; border-radius: 20px; font-size: 12.5px; font-weight: bold; color: #fff; }
+    /* Top Social & Install Bar */
+    .social-bar { display: flex; justify-content: center; gap: 7px; padding: 8px 10px; background: #121212; border-bottom: 1px solid #222; flex-wrap: wrap; }
+    .soc-pill { display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; color: #fff; border: none; cursor: pointer; }
     .tg-pill { background: #229ED9; }
     .wa-pill { background: #25D366; color: #052e16; }
+    .app-pill { background: linear-gradient(90deg, #e50914, #ff3b30); }
+
+    /* Live Counter Bar (User Side) */
+    .counter-bar { display: flex; justify-content: center; gap: 8px; max-width: 780px; margin: 10px auto 4px; padding: 0 12px; }
+    .cnt-box { flex: 1; background: #151515; border: 1px solid #2a2a2a; border-radius: 8px; padding: 7px 6px; text-align: center; cursor: pointer; transition: border-color 0.2s; }
+    .cnt-box:hover { border-color: #e50914; }
+    .cnt-num { font-size: 16px; font-weight: 900; color: #ffcc00; display: block; line-height: 1.2; }
+    .cnt-lbl { font-size: 11px; color: #aaa; font-weight: 600; }
 
     /* Search & Filters */
-    .search-wrap { max-width: 780px; margin: 12px auto 6px; padding: 0 12px; }
+    .search-wrap { max-width: 780px; margin: 10px auto 6px; padding: 0 12px; }
     .search-box { display: flex; background: #1a1a1a; border: 1px solid #333; border-radius: 25px; overflow: hidden; }
-    .search-input { flex: 1; background: transparent; border: none; color: #fff; padding: 11px 16px; font-size: 14px; outline: none; }
+    .search-input { flex: 1; background: transparent; border: none; color: #fff; padding: 10px 16px; font-size: 14px; outline: none; }
     .search-btn { background: #e50914; color: #fff; border: none; padding: 0 18px; font-weight: bold; cursor: pointer; font-size: 14px; }
 
-    .filter-row { display: flex; gap: 7px; margin-top: 10px; justify-content: center; flex-wrap: wrap; }
+    .filter-row { display: flex; gap: 7px; margin-top: 9px; justify-content: center; flex-wrap: wrap; }
     .filter-select, .filter-year-input { background: #181818; color: #e5e5e5; border: 1px solid #333; padding: 7px 11px; border-radius: 20px; font-size: 12.5px; outline: none; }
     .filter-year-input { width: 112px; text-align: center; }
     .filter-select:focus, .filter-year-input:focus { border-color: #e50914; }
 
     /* Category Pills Bar */
-    .cat-bar { display: flex; gap: 6px; overflow-x: auto; padding: 8px 2px 4px; margin-top: 6px; scrollbar-width: none; }
+    .cat-bar { display: flex; gap: 6px; overflow-x: auto; padding: 8px 2px 4px; margin-top: 5px; scrollbar-width: none; }
     .cat-bar::-webkit-scrollbar { display: none; }
     .cat-pill { background: #1a1a1a; border: 1px solid #2e2e2e; color: #ccc; padding: 5px 12px; border-radius: 16px; font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; }
     .cat-pill.active { background: #e50914; border-color: #e50914; color: #fff; }
 
     /* Container */
-    .container { max-width: 1020px; margin: 12px auto; padding: 0 12px; }
+    .container { max-width: 960px; margin: 12px auto; padding: 0 12px; }
 
-    /* Homepage Grid (16:9 YouTube Thumbnail Size) */
+    /* Homepage 2-Column Classic Portrait Poster Grid (Zero Blur, Auto-Adjust) */
     .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    @media (min-width: 768px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+    @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
 
     .card { background: #141414; border: 1px solid #242424; border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.2s, border-color 0.2s; display: flex; flex-direction: column; }
     .card:hover { transform: translateY(-3px); border-color: #e50914; }
-    .thumb-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #121212; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-    .thumb-bg { position: absolute; inset: -10px; width: calc(100% + 20px); height: calc(100% + 20px); object-fit: cover; filter: blur(14px) brightness(0.35); z-index: 1; }
-    .thumb { position: relative; z-index: 2; width: 100%; height: 100%; object-fit: cover; image-rendering: -webkit-optimize-contrast; }
-    .badge { position: absolute; top: 6px; left: 6px; z-index: 3; background: rgba(229, 9, 20, 0.95); color: #fff; font-size: 9.5px; font-weight: bold; padding: 2px 6px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.7); }
-    .series-badge { position: absolute; bottom: 6px; left: 6px; z-index: 3; background: rgba(245, 158, 11, 0.95); color: #000; font-size: 9px; font-weight: 900; padding: 2px 6px; border-radius: 4px; }
-    .year-badge { position: absolute; top: 6px; right: 6px; z-index: 3; background: rgba(0, 0, 0, 0.85); color: #ffcc00; border: 1px solid #444; font-size: 9.5px; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
-    .card-title { padding: 9px 8px; font-size: 13px; font-weight: 600; color: #f0f0f0; text-align: center; line-height: 1.35; background: #141414; flex: 1; display: flex; align-items: center; justify-content: center; }
+    .thumb-wrap { position: relative; width: 100%; aspect-ratio: 2 / 3; background: #0e0e0e; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .thumb { width: 100%; height: 100%; object-fit: contain; display: block; image-rendering: -webkit-optimize-contrast; }
+    .badge { position: absolute; top: 7px; left: 7px; z-index: 3; background: rgba(229, 9, 20, 0.95); color: #fff; font-size: 10px; font-weight: bold; padding: 2px 7px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.7); }
+    .series-badge { position: absolute; bottom: 7px; left: 7px; z-index: 3; background: rgba(245, 158, 11, 0.95); color: #000; font-size: 9.5px; font-weight: 900; padding: 2px 6px; border-radius: 4px; }
+    .year-badge { position: absolute; top: 7px; right: 7px; z-index: 3; background: rgba(0, 0, 0, 0.85); color: #ffcc00; border: 1px solid #444; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
+    .card-title { padding: 9px 8px; font-size: 13px; font-weight: 600; color: #f0f0f0; text-align: center; line-height: 1.35; background: #141414; flex: 1; display: flex; align-items: center; justify-content: center; border-top: 1px solid #1f1f1f; }
 
-    /* Single Movie/Series Page (16:9 Banner Poster) */
+    /* Single Movie/Series Page (Sharp Portrait Poster) */
     .movie-detail { max-width: 720px; margin: auto; background: #111111; border: 1px solid #262626; border-radius: 10px; padding: 16px; }
     .back-btn { display: inline-block; background: #222; color: #fff; padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: bold; margin-bottom: 14px; cursor: pointer; border: 1px solid #333; }
     .back-btn:hover { background: #e50914; border-color: #e50914; }
-    .poster-box { text-align: center; margin-bottom: 16px; background: #0a0a0a; padding: 6px; border-radius: 8px; border: 1px solid #222; }
-    .poster-box img { width: 100%; max-width: 640px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 7px; image-rendering: -webkit-optimize-contrast; }
+    .poster-box { text-align: center; margin-bottom: 16px; background: #0a0a0a; padding: 10px; border-radius: 8px; border: 1px solid #222; }
+    .poster-box img { max-width: 260px; width: 100%; height: auto; max-height: 390px; object-fit: contain; border-radius: 8px; image-rendering: -webkit-optimize-contrast; }
     .info-box { background: #181818; border: 1px solid #2b2b2b; border-radius: 8px; padding: 14px; margin-bottom: 18px; font-size: 14px; line-height: 1.8; }
     .info-box h2 { color: #ffcc00; font-size: 18px; text-align: center; margin-bottom: 10px; border-bottom: 1px dashed #3a3a3a; padding-bottom: 8px; }
 
@@ -75,7 +87,7 @@
 
     /* Screenshots */
     .ss-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
-    .ss-grid img { width: 100%; aspect-ratio: 16 / 9; border-radius: 6px; border: 1px solid #333; object-fit: cover; }
+    .ss-grid img { width: 100%; border-radius: 6px; border: 1px solid #333; object-fit: cover; }
 
     /* Server Boxes (Movie) */
     .server-box { border-radius: 8px; padding: 14px; margin-bottom: 16px; text-align: center; }
@@ -112,12 +124,29 @@
     @media (max-width: 480px) { .app-btns { grid-template-columns: 1fr; } }
     .app-btn { display: flex; align-items: center; justify-content: center; gap: 6px; background: #242424; color: #fff; padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; }
 
-    /* Notification Banner */
-    .notif-banner { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 440px; background: #1c1c1c; border: 1px solid #e50914; border-radius: 10px; padding: 12px 14px; display: none; align-items: center; justify-content: space-between; gap: 10px; z-index: 999; box-shadow: 0 8px 25px rgba(0,0,0,0.85); }
-    .notif-text { font-size: 12.5px; color: #eee; }
-    .notif-actions { display: flex; gap: 6px; flex-shrink: 0; }
-    .notif-allow { background: #e50914; color: #fff; border: none; padding: 7px 12px; border-radius: 5px; font-size: 12px; font-weight: bold; cursor: pointer; }
-    .notif-close { background: #333; color: #bbb; border: none; padding: 7px 9px; border-radius: 5px; font-size: 12px; cursor: pointer; }
+    /* Bottom Floating Action Bar (Request + Chat) */
+    .float-bar { position: fixed; bottom: 12px; right: 12px; display: flex; gap: 8px; z-index: 900; }
+    .float-btn { padding: 10px 15px; border-radius: 25px; border: none; font-weight: bold; font-size: 13px; color: #fff; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.8); display: flex; align-items: center; gap: 6px; }
+    .btn-req { background: linear-gradient(90deg, #d97706, #f59e0b); color: #000; }
+    .btn-chat { background: linear-gradient(90deg, #b80710, #e50914); }
+
+    /* Modal Overlay (Request & Live Chat) */
+    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.82); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 12px; }
+    .modal-box { background: #161616; border: 1px solid #333; border-radius: 12px; width: 100%; max-width: 440px; padding: 16px; max-height: 85vh; display: flex; flex-direction: column; }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2b2b2b; padding-bottom: 10px; margin-bottom: 12px; }
+    .modal-head h3 { color: #ffcc00; font-size: 16px; }
+    .modal-close { background: #2a2a2a; color: #fff; border: none; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    .m-input { width: 100%; background: #1e1e1e; border: 1px solid #333; color: #fff; padding: 10px; border-radius: 6px; font-size: 13.5px; margin-bottom: 10px; outline: none; }
+    .m-submit { width: 100%; background: #e50914; color: #fff; border: none; padding: 11px; border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer; }
+
+    /* Live Chat Messages Area */
+    .chat-msgs { flex: 1; overflow-y: auto; background: #0e0e0e; border: 1px solid #262626; border-radius: 8px; padding: 10px; margin-bottom: 10px; min-height: 240px; max-height: 340px; display: flex; flex-direction: column; gap: 8px; }
+    .chat-bubble { background: #1b1b1b; border: 1px solid #2c2c2c; padding: 8px 10px; border-radius: 8px; font-size: 13px; }
+    .chat-bubble.admin-msg { background: #261214; border-color: #e50914; }
+    .chat-meta { font-size: 11px; color: #ffcc00; font-weight: bold; margin-bottom: 2px; display: flex; justify-content: space-between; }
+    .chat-send-row { display: flex; gap: 6px; }
+    .chat-send-row input { flex: 1; margin-bottom: 0; }
+    .chat-send-btn { background: #e50914; color: #fff; border: none; padding: 0 16px; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
     /* Footer */
     .footer { background: #080808; border-top: 1px solid #1f1f1f; text-align: center; padding: 18px 12px; margin-top: 30px; font-size: 12.5px; color: #777; }
@@ -135,16 +164,33 @@
     <div class="tagline">Watch Online &amp; Fast Download HD / FHD / 4K Movies &amp; Web Series</div>
   </header>
 
-  <!-- Permanent Social Links -->
+  <!-- Permanent Social & Install App Bar -->
   <div class="social-bar">
     <a href="https://t.me/Cinezenix" target="_blank" rel="nofollow noopener" class="soc-pill tg-pill">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.96-.75 3.78-1.65 6.31-2.74 7.58-3.27 3.61-1.51 4.35-1.77 4.84-1.78.11 0 .35.03.5.16.13.1.17.24.18.34.02.07.02.21 0 .33z"/></svg>
-      Join Telegram
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.96-.75 3.78-1.65 6.31-2.74 7.58-3.27 3.61-1.51 4.35-1.77 4.84-1.78.11 0 .35.03.5.16.13.1.17.24.18.34.02.07.02.21 0 .33z"/></svg>
+      Telegram
     </a>
     <a href="https://whatsapp.com/channel/0029VajHSN9FnSz78ivaD61V" target="_blank" rel="nofollow noopener" class="soc-pill wa-pill">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 2c-5.516 0-9.969 4.453-9.969 9.969 0 1.758.459 3.473 1.331 4.986L2 22l5.197-1.363a9.93 9.93 0 0 0 4.834 1.25h.004c5.515 0 9.968-4.453 9.968-9.969 0-2.663-1.037-5.167-2.92-7.05A9.904 9.904 0 0 0 12.031 2zm5.821 14.129c-.246.693-1.433 1.325-1.985 1.408-.506.076-1.147.108-1.852-.116-.428-.136-.977-.318-1.68-.622-2.955-1.276-4.885-4.252-5.032-4.448-.147-.196-1.202-1.599-1.202-3.05 0-1.451.761-2.164 1.031-2.459.27-.295.589-.369.786-.369.196 0 .393.002.564.01.181.009.424-.069.663.506.246.59.835 2.038.909 2.186.074.147.123.319.025.516-.098.196-.147.319-.295.491-.147.172-.31.384-.442.516-.147.147-.301.307-.129.602.172.295.764 1.26 1.64 2.041 1.127 1.005 2.077 1.317 2.372 1.464.295.147.467.123.639-.074.172-.196.737-.86.933-1.155.196-.295.393-.246.663-.147.27.098 1.719.811 2.014.958.295.147.491.221.564.344.074.123.074.712-.172 1.405z"/></svg>
-      WhatsApp Channel
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 2c-5.516 0-9.969 4.453-9.969 9.969 0 1.758.459 3.473 1.331 4.986L2 22l5.197-1.363a9.93 9.93 0 0 0 4.834 1.25h.004c5.515 0 9.968-4.453 9.968-9.969 0-2.663-1.037-5.167-2.92-7.05A9.904 9.904 0 0 0 12.031 2zm5.821 14.129c-.246.693-1.433 1.325-1.985 1.408-.506.076-1.147.108-1.852-.116-.428-.136-.977-.318-1.68-.622-2.955-1.276-4.885-4.252-5.032-4.448-.147-.196-1.202-1.599-1.202-3.05 0-1.451.761-2.164 1.031-2.459.27-.295.589-.369.786-.369.196 0 .393.002.564.01.181.009.424-.069.663.506.246.59.835 2.038.909 2.186.074.147.123.319.025.516-.098.196-.147.319-.295.491-.147.172-.31.384-.442.516-.147.147-.301.307-.129.602.172.295.764 1.26 1.64 2.041 1.127 1.005 2.077 1.317 2.372 1.464.295.147.467.123.639-.074.172-.196.737-.86.933-1.155.196-.295.393-.246.663-.147.27.098 1.719.811 2.014.958.295.147.491.221.564.344.074.123.074.712-.172 1.405z"/></svg>
+      WhatsApp
     </a>
+    <button class="soc-pill app-pill" id="installAppBtn">📲 Add to Home Screen</button>
+  </div>
+
+  <!-- Live Movies & Web Series Counter (User Side) -->
+  <div class="counter-bar" id="counterBar">
+    <div class="cnt-box" onclick="filterByType('all')">
+      <span class="cnt-num" id="cntTotal">0</span>
+      <span class="cnt-lbl">🔥 Total Uploads</span>
+    </div>
+    <div class="cnt-box" onclick="filterByType('movie')">
+      <span class="cnt-num" id="cntMovies">0</span>
+      <span class="cnt-lbl">🎬 Movies</span>
+    </div>
+    <div class="cnt-box" onclick="filterByType('webseries')">
+      <span class="cnt-num" id="cntSeries">0</span>
+      <span class="cnt-lbl">📺 Web Series</span>
+    </div>
   </div>
 
   <!-- Search & Filters -->
@@ -198,12 +244,40 @@
     <p style="text-align:center; color:#888; padding:40px 0;">Loading movies &amp; web series...</p>
   </main>
 
-  <!-- Notification Permission Banner -->
-  <div class="notif-banner" id="notifBanner">
-    <div class="notif-text">🔔 <strong>CineZenix XYZ:</strong> नई मूवीज और वेब सीरीज़ के अलर्ट के लिए Allow करें!</div>
-    <div class="notif-actions">
-      <button class="notif-allow" id="allowNotifBtn">Allow</button>
-      <button class="notif-close" id="closeNotifBtn">✕</button>
+  <!-- Floating Buttons: Request Movie & Live Chat -->
+  <div class="float-bar">
+    <button class="float-btn btn-req" id="openReqModalBtn">🎬 Request</button>
+    <button class="float-btn btn-chat" id="openChatModalBtn">💬 Live Chat</button>
+  </div>
+
+  <!-- Movie Request Modal -->
+  <div class="modal-bg" id="reqModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>🎬 Request Movie / Web Series</h3>
+        <button class="modal-close" id="closeReqModal">✕</button>
+      </div>
+      <input type="text" id="reqUserName" class="m-input" placeholder="आपका नाम (Optional)" />
+      <input type="text" id="reqMovieName" class="m-input" placeholder="Movie या Web Series का नाम लिखें *" />
+      <input type="text" id="reqDetails" class="m-input" placeholder="Year & Language (e.g. 2026 Hindi Dubbed)" />
+      <button class="m-submit" id="sendReqBtn">📩 Send Request to Admin</button>
+      <div id="recentReqs" style="margin-top:12px; max-height:160px; overflow-y:auto; font-size:12.5px; color:#bbb;"></div>
+    </div>
+  </div>
+
+  <!-- Live Community Chat Modal -->
+  <div class="modal-bg" id="chatModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>💬 CineZenix Live Chat</h3>
+        <button class="modal-close" id="closeChatModal">✕</button>
+      </div>
+      <input type="text" id="chatUserName" class="m-input" placeholder="आपका नाम (Your Name)" style="padding:7px 10px; font-size:12.5px;" />
+      <div class="chat-msgs" id="chatMsgsBox">Loading chat...</div>
+      <div class="chat-send-row">
+        <input type="text" id="chatText" class="m-input" placeholder="Type your message..." />
+        <button class="chat-send-btn" id="sendChatBtn">Send</button>
+      </div>
     </div>
   </div>
 
@@ -212,48 +286,89 @@
     &copy; 2026 <span>CineZenix XYZ</span>. All Rights Reserved.
   </footer>
 
-  <!-- Safe & Fast Script -->
+  <!-- Script -->
   <script>
-    const DB_URL = "https://cinezenix-movie-app-default-rtdb.firebaseio.com/movies.json";
+    const BASE_DB = "https://cinezenix-movie-app-default-rtdb.firebaseio.com";
+    const DB_MOVIES = BASE_DB + "/movies.json";
+    const DB_REQS = BASE_DB + "/requests.json";
+    const DB_CHAT = BASE_DB + "/chat.json";
+
+    // Generate Dynamic PWA Manifest
+    const manifestObj = {
+      name: "CineZenix XYZ",
+      short_name: "CineZenix",
+      start_url: window.location.origin + "/",
+      display: "standalone",
+      background_color: "#0b0b0b",
+      theme_color: "#e50914",
+      icons: [{
+        src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='36' fill='%23e50914'/%3E%3Ctext x='96' y='125' font-family='Arial,sans-serif' font-size='88' font-weight='900' fill='%23ffffff' text-anchor='middle'%3ECZ%3C/text%3E%3C/svg%3E",
+        sizes: "192x192",
+        type: "image/svg+xml"
+      }]
+    };
+    document.getElementById("pwaManifest").setAttribute("href", "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifestObj)));
+
+    // PWA Install / Add to Home Screen + Notification Permission Trigger
+    let deferredPrompt = null;
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+    });
+
+    async function requestNotificationOnInstall() {
+      if ("Notification" in window && Notification.permission !== "granted") {
+        try {
+          const perm = await Notification.requestPermission();
+          if (perm === "granted") {
+            new Notification("CineZenix XYZ", { body: "App Installed & Notifications Enabled! नई मूवीज के अपडेट अब तुरंत मिलेंगे।" });
+          }
+        } catch (e) {}
+      }
+    }
+
+    // Also request notification automatically if opened as installed standalone app
+    if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true) {
+      requestNotificationOnInstall();
+    }
+
+    window.addEventListener("appinstalled", () => {
+      requestNotificationOnInstall();
+    });
+
+    document.getElementById("installAppBtn").addEventListener("click", async () => {
+      await requestNotificationOnInstall();
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+      } else {
+        alert("📲 अपने ब्राउज़र मेनू (⋮) पर क्लिक करके 'Add to Home Screen' या 'Install App' दबाएं!");
+      }
+    });
 
     let ALL_MOVIES = [];
     let SELECTED_CAT = "";
+    let SELECTED_TYPE = "all";
     const appEl = document.getElementById("app");
     const searchSection = document.getElementById("searchSection");
+    const counterBar = document.getElementById("counterBar");
 
     window.addEventListener("DOMContentLoaded", () => {
       document.getElementById("yearFilter").value = "";
       document.getElementById("langFilter").value = "";
       document.getElementById("qualFilter").value = "";
+      document.getElementById("chatUserName").value = localStorage.getItem("cz_chat_name") || "";
     });
 
     function enhancePosterQuality(url) {
       if (!url || typeof url !== "string") return "";
       let clean = url.trim();
-      clean = clean.replace(/=w\d+(-h\d+)?(-[a-zA-Z0-9_-]+)?$/i, "=w1280");
-      clean = clean.replace(/\/s\d+(-c)?\//i, "/s1280/");
-      clean = clean.replace(/image\.tmdb\.org\/t\/p\/w(185|200|300|342|500)\//i, "image.tmdb.org/t/p/w1280/");
+      clean = clean.replace(/=w\d+(-h\d+)?(-[a-zA-Z0-9_-]+)?$/i, "=w1000");
+      clean = clean.replace(/\/s\d+(-c)?\//i, "/s1000/");
+      clean = clean.replace(/image\.tmdb\.org\/t\/p\/w(185|200|300|342|500)\//i, "image.tmdb.org/t/p/w780/");
       return clean;
     }
-
-    try {
-      if ("Notification" in window && Notification.permission === "default" && !localStorage.getItem("cz_notif_dismissed")) {
-        setTimeout(() => {
-          document.getElementById("notifBanner").style.display = "flex";
-        }, 2500);
-      }
-      document.getElementById("allowNotifBtn").addEventListener("click", async () => {
-        document.getElementById("notifBanner").style.display = "none";
-        const perm = await Notification.requestPermission();
-        if (perm === "granted") {
-          new Notification("CineZenix XYZ", { body: "Notifications Enabled!" });
-        }
-      });
-      document.getElementById("closeNotifBtn").addEventListener("click", () => {
-        document.getElementById("notifBanner").style.display = "none";
-        localStorage.setItem("cz_notif_dismissed", "1");
-      });
-    } catch (e) {}
 
     function getYouTubeEmbed(url) {
       if (!url || typeof url !== "string") return "";
@@ -267,9 +382,9 @@
       const timeoutId = setTimeout(() => controller.abort(), 8000);
 
       try {
-        const res = await fetch(DB_URL + "?t=" + Date.now(), { signal: controller.signal });
+        const res = await fetch(DB_MOVIES + "?t=" + Date.now(), { signal: controller.signal });
         clearTimeout(timeoutId);
-        if (!res.ok) throw new Error("Server Status " + res.status);
+        if (!res.ok) throw new Error("Status " + res.status);
         const data = await res.json();
 
         if (data && typeof data === "object") {
@@ -280,6 +395,14 @@
         } else {
           ALL_MOVIES = [];
         }
+
+        // Update Live Counters
+        const totalCnt = ALL_MOVIES.length;
+        const seriesCnt = ALL_MOVIES.filter(m => m.type === "webseries").length;
+        const movieCnt = totalCnt - seriesCnt;
+        document.getElementById("cntTotal").innerText = totalCnt;
+        document.getElementById("cntMovies").innerText = movieCnt;
+        document.getElementById("cntSeries").innerText = seriesCnt;
 
         const hash = window.location.hash.replace("#", "");
         if (hash) openMovie(hash);
@@ -298,10 +421,20 @@
       }
     }
 
+    window.filterByType = function(type) {
+      SELECTED_TYPE = type;
+      SELECTED_CAT = type === "webseries" ? "Web Series" : "";
+      document.querySelectorAll(".cat-pill").forEach(p => {
+        p.classList.toggle("active", p.dataset.cat === SELECTED_CAT);
+      });
+      applyFilters();
+    };
+
     function renderGrid(list) {
       searchSection.style.display = "block";
+      counterBar.style.display = "flex";
       if (!list || list.length === 0) {
-        appEl.innerHTML = `<p style="text-align:center; color:#888; padding:40px 0;">कोई मूवी या वेब सीरीज़ नहीं मिली।</p>`;
+        appEl.innerHTML = `<p style="text-align:center; color:#888; padding:40px 0;">कोई मूवी या वेब सीरीज़ नहीं मिली। नीचे 🎬 Request बटन से रिक्वेस्ट भेजें!</p>`;
         return;
       }
       appEl.innerHTML = `<div class="grid">${list.map(m => {
@@ -310,9 +443,9 @@
         return `
         <div class="card" data-id="${m.id}">
           <div class="thumb-wrap">
-            <span class="badge">${m.badge \vert{}\vert{} 'HD'}</span>${m.year ? `<span class="year-badge">${m.year}</span>` : ''}
+            <span class="badge">${m.badge || 'HD'}</span>
+            ${m.year ? `<span class="year-badge">${m.year}</span>` : ''}
             ${isSeries ? `<span class="series-badge">WEB SERIES</span>` : ''}
-            <img class="thumb-bg" src="${hdPoster}" alt="" aria-hidden="true" />
             <img class="thumb" src="${hdPoster}" alt="${m.title || ''}" loading="lazy" />
           </div>
           <div class="card-title">${m.title || 'Untitled'}</div>
@@ -328,6 +461,7 @@
       const m = ALL_MOVIES.find(item => item.id === id);
       if (!m) return renderGrid(ALL_MOVIES);
       searchSection.style.display = "none";
+      counterBar.style.display = "none";
       window.scrollTo(0, 0);
       history.pushState({ id }, "", "#" + id);
 
@@ -358,8 +492,7 @@
       if (isSeries && episodes.length > 0) {
         linksSectionHTML = `
           <div class="ws-box">
-            <h3>📺 ${m.season || 'ALL EPISODES'} — WATCH &amp; DOWNLOAD</h3>
-            ${episodes.map(ep => `
+            <h3>📺 ${m.season \vert{}\vert{} 'ALL EPISODES'} — WATCH &amp; DOWNLOAD</h3>${episodes.map(ep => `
               <div class="ep-item">
                 <div class="ep-name">🎬 ${ep.name}</div>
                 <div class="ep-btns">
@@ -377,7 +510,7 @@
             ${m.pj480 ? `<a href="${m.pj480}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj">▶️ Fast Download 480p [PlayerJet]</a>` : ''}
             ${m.pj720 ? `<a href="${m.pj720}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj">▶️ Fast Download 720p HD [PlayerJet]</a>` : ''}
             ${m.pj1080 ? `<a href="${m.pj1080}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj">▶️ Fast Download 1080p FHD [PlayerJet]</a>` : ''}
-            ${m.pj4k ? `<a href="${m.pj4k}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj-4k">🔥 Fast Download 4K Ultra HD [PlayerJet]</a>` : ''}
+            ${m.pj4k ? `<a href="${m.pj4k}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj-4k">🔥 Watch Online 4K Ultra HD [PlayerJet]</a>` : ''}
           </div>` : ''}
 
           ${hasDW ? `
@@ -395,13 +528,11 @@
           <div class="back-btn" id="backHomeBtn">&#8592; Back to Home</div>
           <div class="poster-box"><img src="${hdPoster}" alt="${m.title || ''}" /></div>
           <div class="info-box">
-            <h2>${m.title || 'Untitled'}</h2>
-            ${m.year ? `<div><strong style="color:#00d2ff;">📅 Release Year:</strong> ${m.year}</div>` : ''}
+            <h2>${m.title \vert{}\vert{} 'Untitled'}</h2>${m.year ? `<div><strong style="color:#00d2ff;">📅 Release Year:</strong> ${m.year}</div>` : ''}
             ${isSeries && m.season ? `<div><strong style="color:#00d2ff;">📺 Season:</strong> ${m.season}</div>` : ''}
             ${catText ? `<div><strong style="color:#00d2ff;">📂 Category:</strong> ${catText}</div>` : ''}
             <div><strong style="color:#00d2ff;">🗣️ Language & Rating:</strong> ${m.language || 'Hindi'}</div>
-            <div><strong style="color:#00d2ff;">🎞️ Quality:</strong> ${m.badge || 'HD / FHD / 4K'}</div>
-            ${m.story ? `<div style="margin-top:8px; padding-top:8px; border-top:1px solid #2a2a2a; color:#bbb;"><strong style="color:#ffcc00;">📝 Storyline:</strong> ${m.story}</div>` : ''}
+            <div><strong style="color:#00d2ff;">🎞️ Quality:</strong> ${m.badge \vert{}\vert{} 'HD / FHD / 4K'}</div>${m.story ? `<div style="margin-top:8px; padding-top:8px; border-top:1px solid #2a2a2a; color:#bbb;"><strong style="color:#ffcc00;">📝 Storyline:</strong> ${m.story}</div>` : ''}
           </div>
 
           ${trailerHTML}
@@ -445,6 +576,7 @@
       document.getElementById("langFilter").value = "";
       document.getElementById("qualFilter").value = "";
       SELECTED_CAT = "";
+      SELECTED_TYPE = "all";
       document.querySelectorAll(".cat-pill").forEach(p => p.classList.toggle("active", p.dataset.cat === ""));
       renderGrid(ALL_MOVIES);
     }
@@ -462,6 +594,9 @@
         const badgeStr = String(m.badge || "");
         const catsStr = Array.isArray(m.categories) ? m.categories.join(" ") : String(m.categories || "");
 
+        const matchType = SELECTED_TYPE === "all" ||
+          (SELECTED_TYPE === "webseries" && m.type === "webseries") ||
+          (SELECTED_TYPE === "movie" && m.type !== "webseries");
         const matchText = !q || titleStr.toLowerCase().includes(q);
         const matchYear = !y || yearStr.includes(y) || titleStr.includes(y);
         const matchLang = !l || langStr.toLowerCase().includes(l);
@@ -470,7 +605,7 @@
           (SELECTED_CAT === "Web Series" && m.type === "webseries") ||
           catsStr.toLowerCase().includes(SELECTED_CAT.toLowerCase()) ||
           titleStr.toLowerCase().includes(SELECTED_CAT.toLowerCase());
-        return matchText && matchYear && matchLang && matchQual && matchCat;
+        return matchType && matchText && matchYear && matchLang && matchQual && matchCat;
       });
       renderGrid(filtered);
     }
@@ -480,9 +615,117 @@
         document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
         pill.classList.add("active");
         SELECTED_CAT = pill.dataset.cat;
+        SELECTED_TYPE = "all";
         applyFilters();
       });
     });
+
+    // ==============================================
+    // MOVIE REQUEST SYSTEM
+    // ==============================================
+    const reqModal = document.getElementById("reqModal");
+    document.getElementById("openReqModalBtn").onclick = () => {
+      reqModal.style.display = "flex";
+      loadRecentRequests();
+    };
+    document.getElementById("closeReqModal").onclick = () => reqModal.style.display = "none";
+
+    async function loadRecentRequests() {
+      const box = document.getElementById("recentReqs");
+      try {
+        const res = await fetch(DB_REQS + "?t=" + Date.now());
+        const data = await res.json();
+        if (!data) { box.innerHTML = "<p>अभी कोई रिक्वेस्ट नहीं है।</p>"; return; }
+        const list = Object.values(data).sort((a, b) => (b.time || 0) - (a.time || 0)).slice(0, 8);
+        box.innerHTML = "<strong style='color:#ffcc00;'>📋 Recent Requests:</strong>" + list.map(r => `
+          <div style="background:#1d1d1d; padding:6px 8px; border-radius:5px; margin-top:5px; display:flex; justify-content:space-between;">
+            <span>🎬 ${r.movie} (${r.details || 'HD'})</span>
+            <span style="color:${r.status === 'Uploaded' ? '#4ade80' : '#fbbf24'}; font-weight:bold;">${r.status || 'Pending'}</span>
+          </div>
+        `).join("");
+      } catch (e) {}
+    }
+
+    document.getElementById("sendReqBtn").onclick = async () => {
+      const movie = document.getElementById("reqMovieName").value.trim();
+      if (!movie) return alert("कृपया Movie या Web Series का नाम लिखें!");
+      const btn = document.getElementById("sendReqBtn");
+      btn.disabled = true;
+      btn.innerText = "Sending...";
+      try {
+        await fetch(DB_REQS, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user: document.getElementById("reqUserName").value.trim() || "User",
+            movie,
+            details: document.getElementById("reqDetails").value.trim(),
+            status: "Pending",
+            time: Date.now()
+          })
+        });
+        alert("✅ आपकी रिक्वेस्ट Admin को भेज दी गई है!");
+        document.getElementById("reqMovieName").value = "";
+        document.getElementById("reqDetails").value = "";
+        loadRecentRequests();
+      } catch (e) {
+        alert("Error: " + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "📩 Send Request to Admin";
+      }
+    };
+
+    // ==============================================
+    // LIVE COMMUNITY CHAT SYSTEM
+    // ==============================================
+    const chatModal = document.getElementById("chatModal");
+    let chatTimer = null;
+
+    document.getElementById("openChatModalBtn").onclick = () => {
+      chatModal.style.display = "flex";
+      loadChatMessages();
+      chatTimer = setInterval(loadChatMessages, 4000);
+    };
+    document.getElementById("closeChatModal").onclick = () => {
+      chatModal.style.display = "none";
+      clearInterval(chatTimer);
+    };
+
+    async function loadChatMessages() {
+      const box = document.getElementById("chatMsgsBox");
+      try {
+        const res = await fetch(DB_CHAT + "?t=" + Date.now());
+        const data = await res.json();
+        if (!data) { box.innerHTML = "<p style='color:#777; text-align:center;'>चैट शुरू करें! पहला मैसेज भेजें...</p>"; return; }
+        const msgs = Object.values(data).sort((a, b) => (a.time || 0) - (b.time || 0)).slice(-30);
+        box.innerHTML = msgs.map(m => `
+          <div class="chat-bubble ${m.isAdmin ? 'admin-msg' : ''}">
+            <div class="chat-meta">
+              <span>${m.isAdmin ? '👑 ADMIN (CineZenix)' : '👤 ' + (m.user || 'Guest')}</span>
+              <span style="color:#777; font-weight:normal;">${new Date(m.time || Date.now()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+            </div>
+            <div style="color:#eee;">${m.text}</div>
+          </div>
+        `).join("");
+        box.scrollTop = box.scrollHeight;
+      } catch (e) {}
+    }
+
+    document.getElementById("sendChatBtn").onclick = async () => {
+      const text = document.getElementById("chatText").value.trim();
+      if (!text) return;
+      const user = document.getElementById("chatUserName").value.trim() || "Guest";
+      localStorage.setItem("cz_chat_name", user);
+      document.getElementById("chatText").value = "";
+
+      await fetch(DB_CHAT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user, text, isAdmin: false, time: Date.now() })
+      });
+      loadChatMessages();
+    };
 
     document.getElementById("homeHeader").addEventListener("click", showHome);
     document.getElementById("searchInput").addEventListener("keyup", applyFilters);
