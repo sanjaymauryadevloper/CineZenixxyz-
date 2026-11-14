@@ -6,9 +6,8 @@
   <meta name="theme-color" content="#e50914" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>CineZenix XYZ - Watch Online & Fast Download HD / FHD / 4K Movies & Web Series</title>
+  <title>CineZenix XYZ - Fast Download HD / FHD / 4K Movies & Web Series</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e50914'/%3E%3Ctext x='50' y='67' font-family='Arial,sans-serif' font-size='48' font-weight='900' fill='%23ffffff' text-anchor='middle'%3ECZ%3C/text%3E%3C/svg%3E" />
-  <!-- Dynamic PWA Manifest for Add to Home Screen / Install App -->
   <link rel="manifest" id="pwaManifest" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,7 +29,7 @@
     .wa-pill { background: #25D366; color: #052e16; }
     .app-pill { background: linear-gradient(90deg, #e50914, #ff3b30); }
 
-    /* Live Counter Bar (User Side) */
+    /* Live Counter Bar */
     .counter-bar { display: flex; justify-content: center; gap: 8px; max-width: 780px; margin: 10px auto 4px; padding: 0 12px; }
     .cnt-box { flex: 1; background: #151515; border: 1px solid #2a2a2a; border-radius: 8px; padding: 7px 6px; text-align: center; cursor: pointer; transition: border-color 0.2s; }
     .cnt-box:hover { border-color: #e50914; }
@@ -57,7 +56,7 @@
     /* Container */
     .container { max-width: 960px; margin: 12px auto; padding: 0 12px; }
 
-    /* Homepage 2-Column Classic Portrait Poster Grid (Zero Blur, Auto-Adjust) */
+    /* Homepage & Suggestions 2-Column Classic Portrait Poster Grid (Zero Blur, Auto-Adjust) */
     .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
 
@@ -70,7 +69,7 @@
     .year-badge { position: absolute; top: 7px; right: 7px; z-index: 3; background: rgba(0, 0, 0, 0.85); color: #ffcc00; border: 1px solid #444; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
     .card-title { padding: 9px 8px; font-size: 13px; font-weight: 600; color: #f0f0f0; text-align: center; line-height: 1.35; background: #141414; flex: 1; display: flex; align-items: center; justify-content: center; border-top: 1px solid #1f1f1f; }
 
-    /* Single Movie/Series Page (Sharp Portrait Poster) */
+    /* Single Movie/Series Page */
     .movie-detail { max-width: 720px; margin: auto; background: #111111; border: 1px solid #262626; border-radius: 10px; padding: 16px; }
     .back-btn { display: inline-block; background: #222; color: #fff; padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: bold; margin-bottom: 14px; cursor: pointer; border: 1px solid #333; }
     .back-btn:hover { background: #e50914; border-color: #e50914; }
@@ -124,13 +123,17 @@
     @media (max-width: 480px) { .app-btns { grid-template-columns: 1fr; } }
     .app-btn { display: flex; align-items: center; justify-content: center; gap: 6px; background: #242424; color: #fff; padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; }
 
+    /* Related / Suggested Section */
+    .suggest-section { max-width: 720px; margin: 22px auto 0; background: #111111; border: 1px solid #262626; border-radius: 10px; padding: 14px; }
+    .suggest-title { font-size: 16px; font-weight: bold; color: #ffcc00; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #262626; display: flex; align-items: center; justify-content: space-between; }
+
     /* Bottom Floating Action Bar (Request + Chat) */
     .float-bar { position: fixed; bottom: 12px; right: 12px; display: flex; gap: 8px; z-index: 900; }
     .float-btn { padding: 10px 15px; border-radius: 25px; border: none; font-weight: bold; font-size: 13px; color: #fff; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.8); display: flex; align-items: center; gap: 6px; }
     .btn-req { background: linear-gradient(90deg, #d97706, #f59e0b); color: #000; }
     .btn-chat { background: linear-gradient(90deg, #b80710, #e50914); }
 
-    /* Modal Overlay (Request & Live Chat) */
+    /* Modal Overlay */
     .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.82); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 12px; }
     .modal-box { background: #161616; border: 1px solid #333; border-radius: 12px; width: 100%; max-width: 440px; padding: 16px; max-height: 85vh; display: flex; flex-direction: column; }
     .modal-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2b2b2b; padding-bottom: 10px; margin-bottom: 12px; }
@@ -161,7 +164,7 @@
       <span class="logo-icon">CZ</span>
       <div class="logo">CINE<span>ZENIX</span> XYZ</div>
     </div>
-    <div class="tagline">Watch Online &amp; Fast Download HD / FHD / 4K Movies &amp; Web Series</div>
+    <div class="tagline">Fast Download HD / FHD / 4K Movies &amp; Web Series</div>
   </header>
 
   <!-- Permanent Social & Install App Bar -->
@@ -177,7 +180,7 @@
     <button class="soc-pill app-pill" id="installAppBtn">📲 Add to Home Screen</button>
   </div>
 
-  <!-- Live Movies & Web Series Counter (User Side) -->
+  <!-- Live Movies & Web Series Counter -->
   <div class="counter-bar" id="counterBar">
     <div class="cnt-box" onclick="filterByType('all')">
       <span class="cnt-num" id="cntTotal">0</span>
@@ -294,20 +297,22 @@
     const DB_CHAT = BASE_DB + "/chat.json";
 
     // Generate Dynamic PWA Manifest
-    const manifestObj = {
-      name: "CineZenix XYZ",
-      short_name: "CineZenix",
-      start_url: window.location.origin + "/",
-      display: "standalone",
-      background_color: "#0b0b0b",
-      theme_color: "#e50914",
-      icons: [{
-        src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='36' fill='%23e50914'/%3E%3Ctext x='96' y='125' font-family='Arial,sans-serif' font-size='88' font-weight='900' fill='%23ffffff' text-anchor='middle'%3ECZ%3C/text%3E%3C/svg%3E",
-        sizes: "192x192",
-        type: "image/svg+xml"
-      }]
-    };
-    document.getElementById("pwaManifest").setAttribute("href", "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifestObj)));
+    try {
+      const manifestObj = {
+        name: "CineZenix XYZ",
+        short_name: "CineZenix",
+        start_url: window.location.origin + "/",
+        display: "standalone",
+        background_color: "#0b0b0b",
+        theme_color: "#e50914",
+        icons: [{
+          src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='36' fill='%23e50914'/%3E%3Ctext x='96' y='125' font-family='Arial,sans-serif' font-size='88' font-weight='900' fill='%23ffffff' text-anchor='middle'%3ECZ%3C/text%3E%3C/svg%3E",
+          sizes: "192x192",
+          type: "image/svg+xml"
+        }]
+      };
+      document.getElementById("pwaManifest").setAttribute("href", "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifestObj)));
+    } catch (e) {}
 
     // PWA Install / Add to Home Screen + Notification Permission Trigger
     let deferredPrompt = null;
@@ -327,7 +332,6 @@
       }
     }
 
-    // Also request notification automatically if opened as installed standalone app
     if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true) {
       requestNotificationOnInstall();
     }
@@ -379,10 +383,10 @@
 
     async function loadMoviesFromDB() {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000);
+      const timeoutId = setTimeout(() => controller.abort(), 12000);
 
       try {
-        const res = await fetch(DB_MOVIES + "?t=" + Date.now(), { signal: controller.signal });
+        const res = await fetch(DB_MOVIES + "?t=" + Date.now(), { signal: controller.signal, cache: "no-store" });
         clearTimeout(timeoutId);
         if (!res.ok) throw new Error("Status " + res.status);
         const data = await res.json();
@@ -396,7 +400,6 @@
           ALL_MOVIES = [];
         }
 
-        // Update Live Counters
         const totalCnt = ALL_MOVIES.length;
         const seriesCnt = ALL_MOVIES.filter(m => m.type === "webseries").length;
         const movieCnt = totalCnt - seriesCnt;
@@ -430,17 +433,10 @@
       applyFilters();
     };
 
-    function renderGrid(list) {
-      searchSection.style.display = "block";
-      counterBar.style.display = "flex";
-      if (!list || list.length === 0) {
-        appEl.innerHTML = `<p style="text-align:center; color:#888; padding:40px 0;">कोई मूवी या वेब सीरीज़ नहीं मिली। नीचे 🎬 Request बटन से रिक्वेस्ट भेजें!</p>`;
-        return;
-      }
-      appEl.innerHTML = `<div class="grid">${list.map(m => {
-        const hdPoster = enhancePosterQuality(m.poster);
-        const isSeries = m.type === "webseries";
-        return `
+    function createCardHTML(m) {
+      const hdPoster = enhancePosterQuality(m.poster);
+      const isSeries = m.type === "webseries";
+      return `
         <div class="card" data-id="${m.id}">
           <div class="thumb-wrap">
             <span class="badge">${m.badge || 'HD'}</span>
@@ -449,8 +445,17 @@
             <img class="thumb" src="${hdPoster}" alt="${m.title || ''}" loading="lazy" />
           </div>
           <div class="card-title">${m.title || 'Untitled'}</div>
-        </div>
-      `}).join("")}</div>`;
+        </div>`;
+    }
+
+    function renderGrid(list) {
+      searchSection.style.display = "block";
+      counterBar.style.display = "flex";
+      if (!list || list.length === 0) {
+        appEl.innerHTML = `<p style="text-align:center; color:#888; padding:40px 0;">कोई मूवी या वेब सीरीज़ नहीं मिली। नीचे 🎬 Request बटन से रिक्वेस्ट भेजें!</p>`;
+        return;
+      }
+      appEl.innerHTML = `<div class="grid">${list.map(m => createCardHTML(m)).join("")}</div>`;
 
       document.querySelectorAll(".card").forEach(card => {
         card.addEventListener("click", () => openMovie(card.dataset.id));
@@ -488,16 +493,18 @@
           </div>`;
       }
 
+      // PlayerJet changed from "Watch Online" to "Fast Download"
       let linksSectionHTML = "";
       if (isSeries && episodes.length > 0) {
         linksSectionHTML = `
           <div class="ws-box">
-            <h3>📺 ${m.season \vert{}\vert{} 'ALL EPISODES'} — WATCH &amp; DOWNLOAD</h3>${episodes.map(ep => `
+            <h3>📺 ${m.season || 'ALL EPISODES'} — FAST DOWNLOAD LINKS</h3>
+            ${episodes.map(ep => `
               <div class="ep-item">
                 <div class="ep-name">🎬 ${ep.name}</div>
                 <div class="ep-btns">
-                  ${ep.pj ? `<a href="${ep.pj}" target="_blank" rel="nofollow noopener" class="ep-btn btn-pj">▶️ Watch Online [PlayerJet]</a>` : ''}
-                  ${ep.dw ? `<a href="${ep.dw}" target="_blank" rel="nofollow noopener" class="ep-btn btn-dw">⬇️ Download [Diskwala]</a>` : ''}
+                  ${ep.pj ? `<a href="${ep.pj}" target="_blank" rel="nofollow noopener" class="ep-btn btn-pj">⚡ Fast Download [PlayerJet]</a>` : ''}
+                  ${ep.dw ? `<a href="${ep.dw}" target="_blank" rel="nofollow noopener" class="ep-btn btn-dw">⬇️ Fast Download [Diskwala]</a>` : ''}
                 </div>
               </div>
             `).join("")}
@@ -506,33 +513,57 @@
         linksSectionHTML = `
           ${hasPJ ? `
           <div class="server-box pj-box">
-            <h3 style="color:#ff3b30; margin-bottom:12px; font-size:16px;">▶️ WATCH ONLINE (PlayerJet Server)</h3>
-            ${m.pj480 ? `<a href="${m.pj480}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj">▶️ Fast Download 480p [PlayerJet]</a>` : ''}
-            ${m.pj720 ? `<a href="${m.pj720}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj">▶️ Fast Download 720p HD [PlayerJet]</a>` : ''}
-            ${m.pj1080 ? `<a href="${m.pj1080}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj">▶️ Fast Download 1080p FHD [PlayerJet]</a>` : ''}
-            ${m.pj4k ? `<a href="${m.pj4k}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj-4k">🔥 Watch Online 4K Ultra HD [PlayerJet]</a>` : ''}
+            <h3 style="color:#ff3b30; margin-bottom:12px; font-size:16px;">⚡ FAST DOWNLOAD (PlayerJet Server)</h3>
+            ${m.pj480 ? `<a href="${m.pj480}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj">⚡ Fast Download 480p [PlayerJet]</a>` : ''}
+            ${m.pj720 ? `<a href="${m.pj720}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj">⚡ Fast Download 720p HD [PlayerJet]</a>` : ''}
+            ${m.pj1080 ? `<a href="${m.pj1080}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj">⚡ Fast Download 1080p FHD [PlayerJet]</a>` : ''}
+            ${m.pj4k ? `<a href="${m.pj4k}" target="_blank" rel="nofollow noopener" class="btn-link btn-pj-4k">🔥 Fast Download 4K Ultra HD [PlayerJet]</a>` : ''}
           </div>` : ''}
 
           ${hasDW ? `
           <div class="server-box dw-box">
             <h3 style="color:#00b4ff; margin-bottom:12px; font-size:16px;">⬇️ FAST DOWNLOAD (Diskwala Server)</h3>
-            ${m.dw480 ? `<a href="${m.dw480}" target="_blank" rel="nofollow noopener" class="btn-link btn-dw">⬇️ Download 480p - Diskwala</a>` : ''}
-            ${m.dw720 ? `<a href="${m.dw720}" target="_blank" rel="nofollow noopener" class="btn-link btn-dw">⬇️ Download 720p HD - Diskwala</a>` : ''}
-            ${m.dw1080 ? `<a href="${m.dw1080}" target="_blank" rel="nofollow noopener" class="btn-link btn-dw">⬇️ Download 1080p FHD - Diskwala</a>` : ''}
-            ${m.dw4k ? `<a href="${m.dw4k}" target="_blank" rel="nofollow noopener" class="btn-link btn-dw-4k">🔥 Download 4K Ultra HD - Diskwala</a>` : ''}
+            ${m.dw480 ? `<a href="${m.dw480}" target="_blank" rel="nofollow noopener" class="btn-link btn-dw">⬇️ Fast Download 480p - Diskwala</a>` : ''}
+            ${m.dw720 ? `<a href="${m.dw720}" target="_blank" rel="nofollow noopener" class="btn-link btn-dw">⬇️ Fast Download 720p HD - Diskwala</a>` : ''}
+            ${m.dw1080 ? `<a href="${m.dw1080}" target="_blank" rel="nofollow noopener" class="btn-link btn-dw">⬇️ Fast Download 1080p FHD - Diskwala</a>` : ''}
+            ${m.dw4k ? `<a href="${m.dw4k}" target="_blank" rel="nofollow noopener" class="btn-link btn-dw-4k">🔥 Fast Download 4K Ultra HD - Diskwala</a>` : ''}
           </div>` : ''}`;
       }
+
+      // Build Suggested Movies / Web Series (Prioritize same category, then latest)
+      const currentCats = Array.isArray(m.categories) ? m.categories : [];
+      const otherMovies = ALL_MOVIES.filter(item => item.id !== id);
+      const sameCatMovies = otherMovies.filter(item => {
+        const iCats = Array.isArray(item.categories) ? item.categories : [];
+        return iCats.some(c => currentCats.includes(c));
+      });
+      const fallbackMovies = otherMovies.filter(item => !sameCatMovies.includes(item));
+      const suggestedList = [...sameCatMovies, ...fallbackMovies].slice(0, 6);
+
+      const suggestedHTML = suggestedList.length > 0 ? `
+        <div class="suggest-section">
+          <div class="suggest-title">
+            <span>🔥 More Suggested Movies &amp; Web Series</span>
+            <span style="font-size:12px; color:#aaa; cursor:pointer;" id="viewAllSuggest">View All &#8594;</span>
+          </div>
+          <div class="grid">
+            ${suggestedList.map(item => createCardHTML(item)).join("")}
+          </div>
+        </div>
+      ` : "";
 
       appEl.innerHTML = `
         <div class="movie-detail">
           <div class="back-btn" id="backHomeBtn">&#8592; Back to Home</div>
           <div class="poster-box"><img src="${hdPoster}" alt="${m.title || ''}" /></div>
           <div class="info-box">
-            <h2>${m.title \vert{}\vert{} 'Untitled'}</h2>${m.year ? `<div><strong style="color:#00d2ff;">📅 Release Year:</strong> ${m.year}</div>` : ''}
+            <h2>${m.title || 'Untitled'}</h2>
+            ${m.year ? `<div><strong style="color:#00d2ff;">📅 Release Year:</strong> ${m.year}</div>` : ''}
             ${isSeries && m.season ? `<div><strong style="color:#00d2ff;">📺 Season:</strong> ${m.season}</div>` : ''}
             ${catText ? `<div><strong style="color:#00d2ff;">📂 Category:</strong> ${catText}</div>` : ''}
             <div><strong style="color:#00d2ff;">🗣️ Language & Rating:</strong> ${m.language || 'Hindi'}</div>
-            <div><strong style="color:#00d2ff;">🎞️ Quality:</strong> ${m.badge \vert{}\vert{} 'HD / FHD / 4K'}</div>${m.story ? `<div style="margin-top:8px; padding-top:8px; border-top:1px solid #2a2a2a; color:#bbb;"><strong style="color:#ffcc00;">📝 Storyline:</strong> ${m.story}</div>` : ''}
+            <div><strong style="color:#00d2ff;">🎞️ Quality:</strong> ${m.badge || 'HD / FHD / 4K'}</div>
+            ${m.story ? `<div style="margin-top:8px; padding-top:8px; border-top:1px solid #2a2a2a; color:#bbb;"><strong style="color:#ffcc00;">📝 Storyline:</strong> ${m.story}</div>` : ''}
           </div>
 
           ${trailerHTML}
@@ -546,7 +577,7 @@
             <p style="color:#fbbf24; font-weight:bold; font-size:13.5px;">🎥 लिंक से वीडियो कैसे प्ले या डाउनलोड करें? (Video Tutorial देखें)</p>
             <div class="tut-grid">
               <a href="https://drive.google.com/file/d/13SEVOuoGSFHqyxzsuXg8VVN5mtpYjyIE/view?usp=drivesdk" target="_blank" rel="nofollow noopener" class="tut-btn tut-pj">
-                ▶️ How to Open PlayerJet Link
+                ⚡ How to Open PlayerJet Link
               </a>
               <a href="https://drive.google.com/file/d/1kKRCu5x12qzZfI-ut_ohSrdhAbHMKjw5/view?usp=drivesdk" target="_blank" rel="nofollow noopener" class="tut-btn tut-dw">
                 ⬇️ How to Open Diskwala Link
@@ -565,8 +596,17 @@
             </div>
           </div>
         </div>
+
+        ${suggestedHTML}
       `;
+
       document.getElementById("backHomeBtn").addEventListener("click", showHome);
+      const viewAllEl = document.getElementById("viewAllSuggest");
+      if (viewAllEl) viewAllEl.addEventListener("click", showHome);
+
+      document.querySelectorAll(".suggest-section .card").forEach(card => {
+        card.addEventListener("click", () => openMovie(card.dataset.id));
+      });
     };
 
     function showHome() {
@@ -620,9 +660,7 @@
       });
     });
 
-    // ==============================================
-    // MOVIE REQUEST SYSTEM
-    // ==============================================
+    // Movie Request System
     const reqModal = document.getElementById("reqModal");
     document.getElementById("openReqModalBtn").onclick = () => {
       reqModal.style.display = "flex";
@@ -676,9 +714,7 @@
       }
     };
 
-    // ==============================================
-    // LIVE COMMUNITY CHAT SYSTEM
-    // ==============================================
+    // Live Community Chat System
     const chatModal = document.getElementById("chatModal");
     let chatTimer = null;
 
