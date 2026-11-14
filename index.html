@@ -5,90 +5,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#e50914" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>CineZenix XYZ - Fast Download HD / FHD / 4K Movies & Web Series</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e50914'/%3E%3Ctext x='50' y='67' font-family='Arial,sans-serif' font-size='48' font-weight='900' fill='%23ffffff' text-anchor='middle'%3ECZ%3C/text%3E%3C/svg%3E" />
+  <title>4kmoviez5u - Fast Download 4K / FHD / HD Movies & Web Series</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e50914'/%3E%3Ctext x='50' y='67' font-family='Arial,sans-serif' font-size='44' font-weight='900' fill='%23ffffff' text-anchor='middle'%3E4K%3C/text%3E%3C/svg%3E" />
   <link rel="manifest" id="pwaManifest" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background-color: #0b0b0b; color: #e5e5e5; font-family: 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; padding-bottom: 70px; }
+    body { background-color: #0b0b0b; color: #e5e5e5; font-family: 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.55; padding-bottom: 68px; }
     a { text-decoration: none; color: inherit; }
 
-    /* Header */
-    .header { background: linear-gradient(180deg, #161616 0%, #0f0f0f 100%); border-bottom: 2px solid #e50914; padding: 12px 16px; text-align: center; position: sticky; top: 0; z-index: 100; cursor: pointer; }
-    .logo-wrap { display: inline-flex; align-items: center; gap: 8px; justify-content: center; }
-    .logo-icon { background: #e50914; color: #fff; font-weight: 900; font-size: 16px; padding: 4px 8px; border-radius: 6px; letter-spacing: 0.5px; }
-    .logo { font-size: 23px; font-weight: 900; letter-spacing: 1.5px; color: #ffffff; text-transform: uppercase; }
+    /* Top Sticky Header with Left 3-Line Menu */
+    .header { background: linear-gradient(180deg, #181818 0%, #0f0f0f 100%); border-bottom: 2px solid #e50914; padding: 11px 14px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; }
+    .menu-btn { background: #1e1e1e; border: 1px solid #333; color: #fff; width: 40px; height: 38px; border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; cursor: pointer; flex-shrink: 0; }
+    .menu-btn span { display: block; width: 20px; height: 2.5px; background: #fff; border-radius: 2px; }
+    .logo-wrap { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .logo-icon { background: #e50914; color: #fff; font-weight: 900; font-size: 14px; padding: 4px 7px; border-radius: 6px; }
+    .logo { font-size: 21px; font-weight: 900; letter-spacing: 0.8px; color: #ffffff; }
     .logo span { color: #e50914; }
-    .tagline { font-size: 11.5px; color: #999; margin-top: 2px; }
+    .hdr-right-btn { background: #222; border: 1px solid #333; color: #ffcc00; padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; }
 
-    /* Top Social & Install Bar */
+    /* Left Slide Sidebar Drawer (3-Line Menu Content) */
+    .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 998; display: none; }
+    .side-drawer { position: fixed; top: 0; left: -290px; width: 275px; height: 100%; background: #121212; border-right: 2px solid #e50914; z-index: 999; transition: left 0.25s ease; overflow-y: auto; padding: 14px; }
+    .side-drawer.open { left: 0; }
+    .drawer-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a2a2a; padding-bottom: 10px; margin-bottom: 12px; }
+    .drawer-head h3 { color: #ffcc00; font-size: 16px; }
+    .drawer-close { background: #262626; color: #fff; border: none; padding: 5px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+    .drawer-sec-title { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.8px; margin: 12px 0 6px; font-weight: bold; }
+    .drawer-item { display: flex; align-items: center; justify-content: space-between; padding: 9px 11px; border-radius: 7px; background: #191919; border: 1px solid #252525; color: #eee; font-size: 13.5px; font-weight: 600; margin-bottom: 6px; cursor: pointer; }
+    .drawer-item.active, .drawer-item:hover { background: #e50914; border-color: #e50914; color: #fff; }
+
+    /* Social & Bookmark Bar */
     .social-bar { display: flex; justify-content: center; gap: 7px; padding: 8px 10px; background: #121212; border-bottom: 1px solid #222; flex-wrap: wrap; }
-    .soc-pill { display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; color: #fff; border: none; cursor: pointer; }
+    .soc-pill { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; color: #fff; border: none; cursor: pointer; }
     .tg-pill { background: #229ED9; }
     .wa-pill { background: #25D366; color: #052e16; }
-    .app-pill { background: linear-gradient(90deg, #e50914, #ff3b30); }
+    .bm-pill { background: #f59e0b; color: #000; }
 
     /* Live Counter Bar */
     .counter-bar { display: flex; justify-content: center; gap: 8px; max-width: 780px; margin: 10px auto 4px; padding: 0 12px; }
-    .cnt-box { flex: 1; background: #151515; border: 1px solid #2a2a2a; border-radius: 8px; padding: 7px 6px; text-align: center; cursor: pointer; transition: border-color 0.2s; }
+    .cnt-box { flex: 1; background: #151515; border: 1px solid #2a2a2a; border-radius: 8px; padding: 6px; text-align: center; cursor: pointer; }
     .cnt-box:hover { border-color: #e50914; }
-    .cnt-num { font-size: 16px; font-weight: 900; color: #ffcc00; display: block; line-height: 1.2; }
+    .cnt-num { font-size: 15px; font-weight: 900; color: #ffcc00; display: block; line-height: 1.2; }
     .cnt-lbl { font-size: 11px; color: #aaa; font-weight: 600; }
 
-    /* Search & Filters */
+    /* Search & Quick Filters */
     .search-wrap { max-width: 780px; margin: 10px auto 6px; padding: 0 12px; }
     .search-box { display: flex; background: #1a1a1a; border: 1px solid #333; border-radius: 25px; overflow: hidden; }
     .search-input { flex: 1; background: transparent; border: none; color: #fff; padding: 10px 16px; font-size: 14px; outline: none; }
     .search-btn { background: #e50914; color: #fff; border: none; padding: 0 18px; font-weight: bold; cursor: pointer; font-size: 14px; }
 
     .filter-row { display: flex; gap: 7px; margin-top: 9px; justify-content: center; flex-wrap: wrap; }
-    .filter-select, .filter-year-input { background: #181818; color: #e5e5e5; border: 1px solid #333; padding: 7px 11px; border-radius: 20px; font-size: 12.5px; outline: none; }
-    .filter-year-input { width: 112px; text-align: center; }
-    .filter-select:focus, .filter-year-input:focus { border-color: #e50914; }
+    .filter-select, .filter-year-input { background: #181818; color: #e5e5e5; border: 1px solid #333; padding: 6px 11px; border-radius: 20px; font-size: 12.5px; outline: none; }
+    .filter-year-input { width: 108px; text-align: center; }
 
-    /* Category Pills Bar */
-    .cat-bar { display: flex; gap: 6px; overflow-x: auto; padding: 8px 2px 4px; margin-top: 5px; scrollbar-width: none; }
-    .cat-bar::-webkit-scrollbar { display: none; }
-    .cat-pill { background: #1a1a1a; border: 1px solid #2e2e2e; color: #ccc; padding: 5px 12px; border-radius: 16px; font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; }
-    .cat-pill.active { background: #e50914; border-color: #e50914; color: #fff; }
+    /* Ads Container */
+    .ad-slot { max-width: 780px; margin: 10px auto; padding: 0 12px; text-align: center; overflow: hidden; }
+    .ad-slot img { max-width: 100%; border-radius: 8px; }
 
     /* Container */
-    .container { max-width: 960px; margin: 12px auto; padding: 0 12px; }
+    .container { max-width: 980px; margin: 12px auto; padding: 0 12px; }
 
-    /* Homepage & Suggestions 2-Column Classic Portrait Poster Grid (Zero Blur, Auto-Adjust) */
+    /* Auto-Fixed Edge-to-Edge Portrait Poster Grid (Zero Black Bars, High Quality 4K) */
     .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
 
-    .card { background: #141414; border: 1px solid #242424; border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.2s, border-color 0.2s; display: flex; flex-direction: column; }
+    .card { background: #141414; border: 1px solid #262626; border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.2s, border-color 0.2s; display: flex; flex-direction: column; }
     .card:hover { transform: translateY(-3px); border-color: #e50914; }
-    .thumb-wrap { position: relative; width: 100%; aspect-ratio: 2 / 3; background: #0e0e0e; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-    .thumb { width: 100%; height: 100%; object-fit: contain; display: block; image-rendering: -webkit-optimize-contrast; }
-    .badge { position: absolute; top: 7px; left: 7px; z-index: 3; background: rgba(229, 9, 20, 0.95); color: #fff; font-size: 10px; font-weight: bold; padding: 2px 7px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.7); }
+    .thumb-wrap { position: relative; width: 100%; aspect-ratio: 2 / 3; background: #181818; overflow: hidden; }
+    .thumb { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; image-rendering: -webkit-optimize-contrast; }
+    .badge { position: absolute; top: 7px; left: 7px; z-index: 3; background: rgba(229, 9, 20, 0.95); color: #fff; font-size: 10px; font-weight: bold; padding: 2px 7px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.75); }
     .series-badge { position: absolute; bottom: 7px; left: 7px; z-index: 3; background: rgba(245, 158, 11, 0.95); color: #000; font-size: 9.5px; font-weight: 900; padding: 2px 6px; border-radius: 4px; }
     .year-badge { position: absolute; top: 7px; right: 7px; z-index: 3; background: rgba(0, 0, 0, 0.85); color: #ffcc00; border: 1px solid #444; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
-    .card-title { padding: 9px 8px; font-size: 13px; font-weight: 600; color: #f0f0f0; text-align: center; line-height: 1.35; background: #141414; flex: 1; display: flex; align-items: center; justify-content: center; border-top: 1px solid #1f1f1f; }
+    .card-title { padding: 9px 8px; font-size: 13px; font-weight: 600; color: #f2f2f2; text-align: center; line-height: 1.35; background: #141414; flex: 1; display: flex; align-items: center; justify-content: center; border-top: 1px solid #222; }
 
     /* Single Movie/Series Page */
     .movie-detail { max-width: 720px; margin: auto; background: #111111; border: 1px solid #262626; border-radius: 10px; padding: 16px; }
     .back-btn { display: inline-block; background: #222; color: #fff; padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: bold; margin-bottom: 14px; cursor: pointer; border: 1px solid #333; }
     .back-btn:hover { background: #e50914; border-color: #e50914; }
-    .poster-box { text-align: center; margin-bottom: 16px; background: #0a0a0a; padding: 10px; border-radius: 8px; border: 1px solid #222; }
-    .poster-box img { max-width: 260px; width: 100%; height: auto; max-height: 390px; object-fit: contain; border-radius: 8px; image-rendering: -webkit-optimize-contrast; }
+    .poster-box { text-align: center; margin-bottom: 16px; }
+    .poster-box img { width: 240px; max-width: 100%; aspect-ratio: 2 / 3; object-fit: cover; object-position: center top; border-radius: 8px; border: 2px solid #2e2e2e; box-shadow: 0 6px 20px rgba(0,0,0,0.7); }
     .info-box { background: #181818; border: 1px solid #2b2b2b; border-radius: 8px; padding: 14px; margin-bottom: 18px; font-size: 14px; line-height: 1.8; }
     .info-box h2 { color: #ffcc00; font-size: 18px; text-align: center; margin-bottom: 10px; border-bottom: 1px dashed #3a3a3a; padding-bottom: 8px; }
 
-    /* Trailer Box */
+    /* Trailer & Screenshots */
     .trailer-box { margin-bottom: 18px; background: #161616; border: 1px solid #333; border-radius: 8px; padding: 12px; text-align: center; }
     .trailer-frame { position: relative; width: 100%; padding-top: 56.25%; border-radius: 6px; overflow: hidden; margin-top: 8px; background: #000; }
     .trailer-frame iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     .yt-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #ff0000; color: #fff; font-weight: bold; padding: 9px 16px; border-radius: 6px; font-size: 13.5px; margin-top: 10px; }
-
-    /* Screenshots */
     .ss-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
     .ss-grid img { width: 100%; border-radius: 6px; border: 1px solid #333; object-fit: cover; }
 
-    /* Server Boxes (Movie) */
+    /* Server Boxes */
     .server-box { border-radius: 8px; padding: 14px; margin-bottom: 16px; text-align: center; }
     .pj-box { background: #1a1214; border: 1px solid #e50914; }
     .dw-box { background: #101924; border: 1px solid #0088ff; }
@@ -99,17 +106,16 @@
     .btn-dw { background: linear-gradient(90deg, #0066cc, #0099ff); }
     .btn-dw-4k { background: linear-gradient(90deg, #0052d4, #4364f7, #6fb1fc); border: 1px solid #ffcc00; }
 
-    /* Web Series Episode Cards */
+    /* Web Series Episodes */
     .ws-box { background: #161410; border: 1px solid #f59e0b; border-radius: 8px; padding: 14px; margin-bottom: 16px; }
     .ws-box h3 { color: #fbbf24; text-align: center; margin-bottom: 12px; font-size: 16px; }
     .ep-item { background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 11px; margin-bottom: 10px; }
-    .ep-item:last-child { margin-bottom: 0; }
     .ep-name { font-weight: bold; color: #fff; font-size: 14px; margin-bottom: 8px; text-align: center; }
     .ep-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     @media (max-width: 440px) { .ep-btns { grid-template-columns: 1fr; } }
     .ep-btn { display: block; text-align: center; color: #fff; font-weight: bold; padding: 9px; border-radius: 6px; font-size: 13px; }
 
-    /* Tutorial Box */
+    /* Tutorial & App Boxes */
     .tut-box { background: #181610; border: 1px solid #f59e0b; border-radius: 8px; padding: 14px; margin-bottom: 16px; text-align: center; }
     .tut-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
     @media (max-width: 480px) { .tut-grid { grid-template-columns: 1fr; } }
@@ -117,39 +123,31 @@
     .tut-pj { background: #991b1b; border: 1px solid #ef4444; }
     .tut-dw { background: #1e3a8a; border: 1px solid #3b82f6; }
 
-    /* App Install & Community Box */
-    .app-box { background: #1a1a1a; border: 1px dashed #ffcc00; border-radius: 8px; padding: 14px; text-align: center; }
+    .app-box { background: #1a1a1a; border: 1px dashed #ffcc00; border-radius: 8px; padding: 14px; text-align: center; margin-bottom: 18px; }
     .app-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
     @media (max-width: 480px) { .app-btns { grid-template-columns: 1fr; } }
     .app-btn { display: flex; align-items: center; justify-content: center; gap: 6px; background: #242424; color: #fff; padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; }
 
+    /* Movie Comment Box (Replaces Live Chat) */
+    .comment-box { background: #161616; border: 1px solid #2e2e2e; border-radius: 10px; padding: 14px; margin-top: 16px; }
+    .comment-box h3 { color: #ffcc00; font-size: 16px; margin-bottom: 10px; }
+    .cmt-input { width: 100%; background: #1e1e1e; border: 1px solid #333; color: #fff; padding: 9px 12px; border-radius: 6px; font-size: 13.5px; margin-bottom: 8px; outline: none; }
+    .cmt-btn { background: #e50914; color: #fff; border: none; padding: 9px 16px; border-radius: 6px; font-weight: bold; font-size: 13.5px; cursor: pointer; }
+    .cmt-list { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+    .cmt-item { background: #1c1c1c; border: 1px solid #2c2c2c; padding: 9px 11px; border-radius: 7px; font-size: 13px; }
+    .cmt-item.admin-cmt { border-color: #e50914; background: #241315; }
+
     /* Related / Suggested Section */
-    .suggest-section { max-width: 720px; margin: 22px auto 0; background: #111111; border: 1px solid #262626; border-radius: 10px; padding: 14px; }
+    .suggest-section { max-width: 720px; margin: 20px auto 0; background: #111111; border: 1px solid #262626; border-radius: 10px; padding: 14px; }
     .suggest-title { font-size: 16px; font-weight: bold; color: #ffcc00; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #262626; display: flex; align-items: center; justify-content: space-between; }
 
-    /* Bottom Floating Action Bar (Request + Chat) */
-    .float-bar { position: fixed; bottom: 12px; right: 12px; display: flex; gap: 8px; z-index: 900; }
-    .float-btn { padding: 10px 15px; border-radius: 25px; border: none; font-weight: bold; font-size: 13px; color: #fff; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.8); display: flex; align-items: center; gap: 6px; }
-    .btn-req { background: linear-gradient(90deg, #d97706, #f59e0b); color: #000; }
-    .btn-chat { background: linear-gradient(90deg, #b80710, #e50914); }
+    /* Bookmark Popup Modal (On Site Open with Close Button) */
+    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1200; display: none; align-items: center; justify-content: center; padding: 14px; }
+    .modal-box { background: #161616; border: 2px solid #e50914; border-radius: 12px; width: 100%; max-width: 400px; padding: 18px; position: relative; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9); }
+    .modal-close-x { position: absolute; top: 10px; right: 10px; background: #2a2a2a; color: #fff; border: none; width: 30px; height: 30px; border-radius: 50%; font-weight: bold; cursor: pointer; font-size: 14px; }
 
-    /* Modal Overlay */
-    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.82); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 12px; }
-    .modal-box { background: #161616; border: 1px solid #333; border-radius: 12px; width: 100%; max-width: 440px; padding: 16px; max-height: 85vh; display: flex; flex-direction: column; }
-    .modal-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2b2b2b; padding-bottom: 10px; margin-bottom: 12px; }
-    .modal-head h3 { color: #ffcc00; font-size: 16px; }
-    .modal-close { background: #2a2a2a; color: #fff; border: none; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-    .m-input { width: 100%; background: #1e1e1e; border: 1px solid #333; color: #fff; padding: 10px; border-radius: 6px; font-size: 13.5px; margin-bottom: 10px; outline: none; }
-    .m-submit { width: 100%; background: #e50914; color: #fff; border: none; padding: 11px; border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer; }
-
-    /* Live Chat Messages Area */
-    .chat-msgs { flex: 1; overflow-y: auto; background: #0e0e0e; border: 1px solid #262626; border-radius: 8px; padding: 10px; margin-bottom: 10px; min-height: 240px; max-height: 340px; display: flex; flex-direction: column; gap: 8px; }
-    .chat-bubble { background: #1b1b1b; border: 1px solid #2c2c2c; padding: 8px 10px; border-radius: 8px; font-size: 13px; }
-    .chat-bubble.admin-msg { background: #261214; border-color: #e50914; }
-    .chat-meta { font-size: 11px; color: #ffcc00; font-weight: bold; margin-bottom: 2px; display: flex; justify-content: space-between; }
-    .chat-send-row { display: flex; gap: 6px; }
-    .chat-send-row input { flex: 1; margin-bottom: 0; }
-    .chat-send-btn { background: #e50914; color: #fff; border: none; padding: 0 16px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+    /* Floating Request Button */
+    .float-req { position: fixed; bottom: 14px; right: 14px; z-index: 900; background: linear-gradient(90deg, #d97706, #f59e0b); color: #000; padding: 10px 16px; border-radius: 25px; border: none; font-weight: bold; font-size: 13px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.8); }
 
     /* Footer */
     .footer { background: #080808; border-top: 1px solid #1f1f1f; text-align: center; padding: 18px 12px; margin-top: 30px; font-size: 12.5px; color: #777; }
@@ -158,33 +156,64 @@
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="header" id="homeHeader">
-    <div class="logo-wrap">
-      <span class="logo-icon">CZ</span>
-      <div class="logo">CINE<span>ZENIX</span> XYZ</div>
+  <!-- Header with Left 3-Line Category Menu -->
+  <header class="header">
+    <button class="menu-btn" id="openDrawerBtn" aria-label="Categories Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="logo-wrap" id="homeHeader">
+      <span class="logo-icon">4K</span>
+      <div class="logo">4kmoviez<span>5u</span></div>
     </div>
-    <div class="tagline">Fast Download HD / FHD / 4K Movies &amp; Web Series</div>
+
+    <button class="hdr-right-btn" id="openBmBtn">⭐ Save</button>
   </header>
 
-  <!-- Permanent Social & Install App Bar -->
+  <!-- Left 3-Line Sidebar Drawer -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="side-drawer" id="sideDrawer">
+    <div class="drawer-head">
+      <h3>📂 Categories &amp; Menu</h3>
+      <button class="drawer-close" id="closeDrawerBtn">✕</button>
+    </div>
+    <div class="drawer-sec-title">Browse Categories</div>
+    <div id="drawerCatList">
+      <div class="drawer-item active" data-cat="">🔥 All Movies &amp; Series</div>
+      <div class="drawer-item" data-cat="Web Series">📺 Web Series</div>
+      <div class="drawer-item" data-cat="Bollywood">🎬 Bollywood</div>
+      <div class="drawer-item" data-cat="Hollywood">🌎 Hollywood</div>
+      <div class="drawer-item" data-cat="South Movies">🔥 South Movies</div>
+      <div class="drawer-item" data-cat="Anime">🎌 Anime</div>
+      <div class="drawer-item" data-cat="Action">💥 Action</div>
+      <div class="drawer-item" data-cat="Thriller">🔪 Thriller</div>
+      <div class="drawer-item" data-cat="Comedy">😂 Comedy</div>
+      <div class="drawer-item" data-cat="Horror">👻 Horror</div>
+    </div>
+    <div class="drawer-sec-title">Quick Actions</div>
+    <div class="drawer-item" onclick="closeDrawer(); openReqModal();">🎬 Request a Movie</div>
+    <div class="drawer-item" onclick="closeDrawer(); openBookmarkPopup();">⭐ Bookmark Website</div>
+    <a href="https://t.me/Cinezenix" target="_blank" rel="nofollow noopener" class="drawer-item">✈️ Join Telegram</a>
+    <a href="https://whatsapp.com/channel/0029VajHSN9FnSz78ivaD61V" target="_blank" rel="nofollow noopener" class="drawer-item">💬 WhatsApp Channel</a>
+  </aside>
+
+  <!-- Social & Bookmark Bar -->
   <div class="social-bar">
-    <a href="https://t.me/Cinezenix" target="_blank" rel="nofollow noopener" class="soc-pill tg-pill">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.96-.75 3.78-1.65 6.31-2.74 7.58-3.27 3.61-1.51 4.35-1.77 4.84-1.78.11 0 .35.03.5.16.13.1.17.24.18.34.02.07.02.21 0 .33z"/></svg>
-      Telegram
-    </a>
-    <a href="https://whatsapp.com/channel/0029VajHSN9FnSz78ivaD61V" target="_blank" rel="nofollow noopener" class="soc-pill wa-pill">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 2c-5.516 0-9.969 4.453-9.969 9.969 0 1.758.459 3.473 1.331 4.986L2 22l5.197-1.363a9.93 9.93 0 0 0 4.834 1.25h.004c5.515 0 9.968-4.453 9.968-9.969 0-2.663-1.037-5.167-2.92-7.05A9.904 9.904 0 0 0 12.031 2zm5.821 14.129c-.246.693-1.433 1.325-1.985 1.408-.506.076-1.147.108-1.852-.116-.428-.136-.977-.318-1.68-.622-2.955-1.276-4.885-4.252-5.032-4.448-.147-.196-1.202-1.599-1.202-3.05 0-1.451.761-2.164 1.031-2.459.27-.295.589-.369.786-.369.196 0 .393.002.564.01.181.009.424-.069.663.506.246.59.835 2.038.909 2.186.074.147.123.319.025.516-.098.196-.147.319-.295.491-.147.172-.31.384-.442.516-.147.147-.301.307-.129.602.172.295.764 1.26 1.64 2.041 1.127 1.005 2.077 1.317 2.372 1.464.295.147.467.123.639-.074.172-.196.737-.86.933-1.155.196-.295.393-.246.663-.147.27.098 1.719.811 2.014.958.295.147.491.221.564.344.074.123.074.712-.172 1.405z"/></svg>
-      WhatsApp
-    </a>
-    <button class="soc-pill app-pill" id="installAppBtn">📲 Add to Home Screen</button>
+    <a href="https://t.me/Cinezenix" target="_blank" rel="nofollow noopener" class="soc-pill tg-pill">✈️ Telegram</a>
+    <a href="https://whatsapp.com/channel/0029VajHSN9FnSz78ivaD61V" target="_blank" rel="nofollow noopener" class="soc-pill wa-pill">💬 WhatsApp</a>
+    <button class="soc-pill bm-pill" id="installAppBtn">📲 Add to Home Screen</button>
   </div>
 
-  <!-- Live Movies & Web Series Counter -->
+  <!-- Top Ad Slot (Managed from Admin Panel) -->
+  <div class="ad-slot" id="topAdSlot"></div>
+
+  <!-- Live Counter Bar -->
   <div class="counter-bar" id="counterBar">
     <div class="cnt-box" onclick="filterByType('all')">
       <span class="cnt-num" id="cntTotal">0</span>
-      <span class="cnt-lbl">🔥 Total Uploads</span>
+      <span class="cnt-lbl">🔥 Total</span>
     </div>
     <div class="cnt-box" onclick="filterByType('movie')">
       <span class="cnt-num" id="cntMovies">0</span>
@@ -201,20 +230,6 @@
     <div class="search-box">
       <input type="text" id="searchInput" class="search-input" placeholder="Search movie or web series name..." />
       <button class="search-btn" id="searchBtn">Search</button>
-    </div>
-
-    <!-- Category Scroll Pills -->
-    <div class="cat-bar" id="catBar">
-      <span class="cat-pill active" data-cat="">🔥 All</span>
-      <span class="cat-pill" data-cat="Web Series">📺 Web Series</span>
-      <span class="cat-pill" data-cat="Bollywood">Bollywood</span>
-      <span class="cat-pill" data-cat="Hollywood">Hollywood</span>
-      <span class="cat-pill" data-cat="South Movies">South Movies</span>
-      <span class="cat-pill" data-cat="Anime">Anime</span>
-      <span class="cat-pill" data-cat="Action">Action</span>
-      <span class="cat-pill" data-cat="Thriller">Thriller</span>
-      <span class="cat-pill" data-cat="Comedy">Comedy</span>
-      <span class="cat-pill" data-cat="Horror">Horror</span>
     </div>
 
     <div class="filter-row">
@@ -244,69 +259,70 @@
 
   <!-- Main Content -->
   <main class="container" id="app">
-    <p style="text-align:center; color:#888; padding:40px 0;">Loading movies &amp; web series...</p>
+    <p style="text-align:center; color:#888; padding:40px 0;">Loading 4kmoviez5u...</p>
   </main>
 
-  <!-- Floating Buttons: Request Movie & Live Chat -->
-  <div class="float-bar">
-    <button class="float-btn btn-req" id="openReqModalBtn">🎬 Request</button>
-    <button class="float-btn btn-chat" id="openChatModalBtn">💬 Live Chat</button>
+  <!-- Bottom Ad Slot (Managed from Admin Panel) -->
+  <div class="ad-slot" id="bottomAdSlot"></div>
+
+  <!-- Floating Request Button -->
+  <button class="float-req" id="openReqModalBtn">🎬 Request Movie</button>
+
+  <!-- Bookmark Popup Modal (Shows on Site Open with Close Button) -->
+  <div class="modal-bg" id="bmModal">
+    <div class="modal-box">
+      <button class="modal-close-x" id="closeBmModal">✕</button>
+      <div style="font-size:34px; margin-bottom:6px;">⭐</div>
+      <h3 style="color:#ffcc00; font-size:18px; margin-bottom:8px;">Bookmark 4kmoviez5u!</h3>
+      <p style="font-size:13.5px; color:#ccc; margin-bottom:14px;">
+        हमारी ऑफिशियल वेबसाइट <strong>4kmoviez5u</strong> को बुकमार्क (Bookmark) या Home Screen पर सेव कर लें ताकि नया डोमेन या लेटेस्ट 4K मूवीज आपसे कभी मिस न हों!
+      </p>
+      <button id="doBookmarkBtn" style="width:100%; background:#e50914; color:#fff; border:none; padding:11px; border-radius:8px; font-weight:bold; font-size:14px; cursor:pointer; margin-bottom:8px;">
+        ⭐ Bookmark / Add to Home Screen
+      </button>
+      <button id="dismissBmBtn" style="width:100%; background:#262626; color:#aaa; border:none; padding:9px; border-radius:8px; font-size:13px; cursor:pointer;">
+        Close
+      </button>
+    </div>
   </div>
 
   <!-- Movie Request Modal -->
   <div class="modal-bg" id="reqModal">
-    <div class="modal-box">
-      <div class="modal-head">
-        <h3>🎬 Request Movie / Web Series</h3>
-        <button class="modal-close" id="closeReqModal">✕</button>
-      </div>
-      <input type="text" id="reqUserName" class="m-input" placeholder="आपका नाम (Optional)" />
-      <input type="text" id="reqMovieName" class="m-input" placeholder="Movie या Web Series का नाम लिखें *" />
-      <input type="text" id="reqDetails" class="m-input" placeholder="Year & Language (e.g. 2026 Hindi Dubbed)" />
-      <button class="m-submit" id="sendReqBtn">📩 Send Request to Admin</button>
-      <div id="recentReqs" style="margin-top:12px; max-height:160px; overflow-y:auto; font-size:12.5px; color:#bbb;"></div>
-    </div>
-  </div>
-
-  <!-- Live Community Chat Modal -->
-  <div class="modal-bg" id="chatModal">
-    <div class="modal-box">
-      <div class="modal-head">
-        <h3>💬 CineZenix Live Chat</h3>
-        <button class="modal-close" id="closeChatModal">✕</button>
-      </div>
-      <input type="text" id="chatUserName" class="m-input" placeholder="आपका नाम (Your Name)" style="padding:7px 10px; font-size:12.5px;" />
-      <div class="chat-msgs" id="chatMsgsBox">Loading chat...</div>
-      <div class="chat-send-row">
-        <input type="text" id="chatText" class="m-input" placeholder="Type your message..." />
-        <button class="chat-send-btn" id="sendChatBtn">Send</button>
-      </div>
+    <div class="modal-box" style="text-align:left;">
+      <button class="modal-close-x" id="closeReqModal">✕</button>
+      <h3 style="color:#ffcc00; font-size:16px; margin-bottom:12px;">🎬 Request Movie / Web Series</h3>
+      <input type="text" id="reqUserName" class="cmt-input" placeholder="आपका नाम (Optional)" />
+      <input type="text" id="reqMovieName" class="cmt-input" placeholder="Movie या Web Series का नाम लिखें *" />
+      <input type="text" id="reqDetails" class="cmt-input" placeholder="Year & Language (e.g. 2026 Hindi Dubbed)" />
+      <button class="cmt-btn" style="width:100%;" id="sendReqBtn">📩 Send Request</button>
+      <div id="recentReqs" style="margin-top:12px; max-height:150px; overflow-y:auto; font-size:12.5px; color:#bbb;"></div>
     </div>
   </div>
 
   <!-- Footer -->
   <footer class="footer">
-    &copy; 2026 <span>CineZenix XYZ</span>. All Rights Reserved.
+    &copy; 2026 <span>4kmoviez5u</span>. All Rights Reserved.
   </footer>
 
-  <!-- Script -->
+  <!-- Fast Cache + Live Sync Script -->
   <script>
     const BASE_DB = "https://cinezenix-movie-app-default-rtdb.firebaseio.com";
     const DB_MOVIES = BASE_DB + "/movies.json";
     const DB_REQS = BASE_DB + "/requests.json";
-    const DB_CHAT = BASE_DB + "/chat.json";
+    const DB_COMMENTS = BASE_DB + "/comments";
+    const DB_ADS = BASE_DB + "/ads.json";
 
-    // Generate Dynamic PWA Manifest
+    // Dynamic PWA Manifest for 4kmoviez5u
     try {
       const manifestObj = {
-        name: "CineZenix XYZ",
-        short_name: "CineZenix",
+        name: "4kmoviez5u",
+        short_name: "4kmoviez5u",
         start_url: window.location.origin + "/",
         display: "standalone",
         background_color: "#0b0b0b",
         theme_color: "#e50914",
         icons: [{
-          src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='36' fill='%23e50914'/%3E%3Ctext x='96' y='125' font-family='Arial,sans-serif' font-size='88' font-weight='900' fill='%23ffffff' text-anchor='middle'%3ECZ%3C/text%3E%3C/svg%3E",
+          src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='36' fill='%23e50914'/%3E%3Ctext x='96' y='122' font-family='Arial,sans-serif' font-size='78' font-weight='900' fill='%23ffffff' text-anchor='middle'%3E4K%3C/text%3E%3C/svg%3E",
           sizes: "192x192",
           type: "image/svg+xml"
         }]
@@ -314,44 +330,57 @@
       document.getElementById("pwaManifest").setAttribute("href", "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifestObj)));
     } catch (e) {}
 
-    // PWA Install / Add to Home Screen + Notification Permission Trigger
-    let deferredPrompt = null;
-    window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-    });
+    // Left 3-Line Drawer Controls
+    const sideDrawer = document.getElementById("sideDrawer");
+    const drawerOverlay = document.getElementById("drawerOverlay");
+    function openDrawer() { sideDrawer.classList.add("open"); drawerOverlay.style.display = "block"; }
+    window.closeDrawer = function() { sideDrawer.classList.remove("open"); drawerOverlay.style.display = "none"; };
+    document.getElementById("openDrawerBtn").onclick = openDrawer;
+    document.getElementById("closeDrawerBtn").onclick = closeDrawer;
+    drawerOverlay.onclick = closeDrawer;
 
-    async function requestNotificationOnInstall() {
+    // Bookmark Popup on Site Open
+    const bmModal = document.getElementById("bmModal");
+    window.openBookmarkPopup = function() { bmModal.style.display = "flex"; };
+    function closeBookmarkPopup() {
+      bmModal.style.display = "none";
+      sessionStorage.setItem("4km_bm_shown", "1");
+    }
+    document.getElementById("openBmBtn").onclick = openBookmarkPopup;
+    document.getElementById("closeBmModal").onclick = closeBookmarkPopup;
+    document.getElementById("dismissBmBtn").onclick = closeBookmarkPopup;
+
+    if (!sessionStorage.getItem("4km_bm_shown")) {
+      setTimeout(() => { bmModal.style.display = "flex"; }, 1200);
+    }
+
+    // PWA Install & Notification Permission
+    let deferredPrompt = null;
+    window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); deferredPrompt = e; });
+
+    async function triggerInstallAndNotif() {
+      closeBookmarkPopup();
       if ("Notification" in window && Notification.permission !== "granted") {
         try {
           const perm = await Notification.requestPermission();
           if (perm === "granted") {
-            new Notification("CineZenix XYZ", { body: "App Installed & Notifications Enabled! नई मूवीज के अपडेट अब तुरंत मिलेंगे।" });
+            new Notification("4kmoviez5u", { body: "Bookmarked & Notifications Enabled!" });
           }
         } catch (e) {}
       }
-    }
-
-    if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true) {
-      requestNotificationOnInstall();
-    }
-
-    window.addEventListener("appinstalled", () => {
-      requestNotificationOnInstall();
-    });
-
-    document.getElementById("installAppBtn").addEventListener("click", async () => {
-      await requestNotificationOnInstall();
       if (deferredPrompt) {
         deferredPrompt.prompt();
         await deferredPrompt.userChoice;
         deferredPrompt = null;
       } else {
-        alert("📲 अपने ब्राउज़र मेनू (⋮) पर क्लिक करके 'Add to Home Screen' या 'Install App' दबाएं!");
+        alert("⭐ ब्राउज़र के Star (☆) या Menu (⋮) -> 'Add to Home screen / Bookmark' पर क्लिक करके 4kmoviez5u सेव करें!");
       }
-    });
+    }
+    document.getElementById("doBookmarkBtn").onclick = triggerInstallAndNotif;
+    document.getElementById("installAppBtn").onclick = triggerInstallAndNotif;
 
     let ALL_MOVIES = [];
+    let ADS_DATA = {};
     let SELECTED_CAT = "";
     let SELECTED_TYPE = "all";
     const appEl = document.getElementById("app");
@@ -362,15 +391,15 @@
       document.getElementById("yearFilter").value = "";
       document.getElementById("langFilter").value = "";
       document.getElementById("qualFilter").value = "";
-      document.getElementById("chatUserName").value = localStorage.getItem("cz_chat_name") || "";
     });
 
+    // Auto 4K High-Quality Poster Enhancer
     function enhancePosterQuality(url) {
       if (!url || typeof url !== "string") return "";
       let clean = url.trim();
-      clean = clean.replace(/=w\d+(-h\d+)?(-[a-zA-Z0-9_-]+)?$/i, "=w1000");
-      clean = clean.replace(/\/s\d+(-c)?\//i, "/s1000/");
-      clean = clean.replace(/image\.tmdb\.org\/t\/p\/w(185|200|300|342|500)\//i, "image.tmdb.org/t/p/w780/");
+      clean = clean.replace(/=w\d+(-h\d+)?(-[a-zA-Z0-9_-]+)?$/i, "=w1200");
+      clean = clean.replace(/\/s\d+(-c)?\//i, "/s1200/");
+      clean = clean.replace(/image\.tmdb\.org\/t\/p\/w(185|200|300|342|500|780)\//i, "image.tmdb.org/t/p/original/");
       return clean;
     }
 
@@ -381,54 +410,74 @@
       return match ? `https://www.youtube.com/embed/${match[1]}?rel=0` : "";
     }
 
-    async function loadMoviesFromDB() {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 12000);
+    function renderAd(slotId, code) {
+      const el = document.getElementById(slotId);
+      if (!el) return;
+      if (code && code.trim() !== "") {
+        el.innerHTML = code;
+        el.style.display = "block";
+      } else {
+        el.innerHTML = "";
+        el.style.display = "none";
+      }
+    }
+
+    function processMoviesData(data) {
+      if (data && typeof data === "object") {
+        ALL_MOVIES = Object.keys(data).map(key => ({
+          id: key,
+          ...(data[key] || {})
+        })).sort((a, b) => (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0));
+      } else {
+        ALL_MOVIES = [];
+      }
+
+      const totalCnt = ALL_MOVIES.length;
+      const seriesCnt = ALL_MOVIES.filter(m => m.type === "webseries").length;
+      document.getElementById("cntTotal").innerText = totalCnt;
+      document.getElementById("cntMovies").innerText = totalCnt - seriesCnt;
+      document.getElementById("cntSeries").innerText = seriesCnt;
+
+      const hash = window.location.hash.replace("#", "");
+      if (hash) openMovie(hash);
+      else applyFilters();
+    }
+
+    // Super-Fast Instant Load (Cache First + Background Network Sync)
+    async function initApp() {
+      const cachedMovies = localStorage.getItem("4km_cache_movies");
+      if (cachedMovies) {
+        try { processMoviesData(JSON.parse(cachedMovies)); } catch (e) {}
+      }
 
       try {
-        const res = await fetch(DB_MOVIES + "?t=" + Date.now(), { signal: controller.signal, cache: "no-store" });
-        clearTimeout(timeoutId);
-        if (!res.ok) throw new Error("Status " + res.status);
-        const data = await res.json();
+        const [mRes, aRes] = await Promise.all([
+          fetch(DB_MOVIES + "?t=" + Date.now(), { cache: "no-store" }),
+          fetch(DB_ADS + "?t=" + Date.now(), { cache: "no-store" })
+        ]);
 
-        if (data && typeof data === "object") {
-          ALL_MOVIES = Object.keys(data).map(key => ({
-            id: key,
-            ...(data[key] || {})
-          })).sort((a, b) => (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0));
-        } else {
-          ALL_MOVIES = [];
+        if (mRes.ok) {
+          const mData = await mRes.json();
+          localStorage.setItem("4km_cache_movies", JSON.stringify(mData || {}));
+          processMoviesData(mData);
         }
-
-        const totalCnt = ALL_MOVIES.length;
-        const seriesCnt = ALL_MOVIES.filter(m => m.type === "webseries").length;
-        const movieCnt = totalCnt - seriesCnt;
-        document.getElementById("cntTotal").innerText = totalCnt;
-        document.getElementById("cntMovies").innerText = movieCnt;
-        document.getElementById("cntSeries").innerText = seriesCnt;
-
-        const hash = window.location.hash.replace("#", "");
-        if (hash) openMovie(hash);
-        else applyFilters();
+        if (aRes.ok) {
+          ADS_DATA = (await aRes.json()) || {};
+          renderAd("topAdSlot", ADS_DATA.topAd);
+          renderAd("bottomAdSlot", ADS_DATA.bottomAd);
+        }
       } catch (err) {
-        clearTimeout(timeoutId);
-        appEl.innerHTML = `
-          <div style="text-align:center; padding:30px; color:#ff4d4d;">
-            <p>Content लोड होने में समय लग रहा है (${err.name === 'AbortError' ? 'Slow Network' : err.message})</p>
-            <button id="retryBtn" style="margin-top:12px; background:#e50914; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-weight:bold; cursor:pointer;">🔄 Reload</button>
-          </div>`;
-        document.getElementById("retryBtn").onclick = () => {
-          appEl.innerHTML = `<p style="text-align:center; color:#888; padding:40px 0;">Loading...</p>`;
-          loadMoviesFromDB();
-        };
+        if (!cachedMovies) {
+          appEl.innerHTML = `<div style="text-align:center; padding:30px; color:#ff4d4d;"><p>Network Slow (${err.message})</p><button onclick="location.reload()" style="margin-top:10px; background:#e50914; color:#fff; border:none; padding:9px 18px; border-radius:6px; font-weight:bold;">🔄 Retry</button></div>`;
+        }
       }
     }
 
     window.filterByType = function(type) {
       SELECTED_TYPE = type;
       SELECTED_CAT = type === "webseries" ? "Web Series" : "";
-      document.querySelectorAll(".cat-pill").forEach(p => {
-        p.classList.toggle("active", p.dataset.cat === SELECTED_CAT);
+      document.querySelectorAll("#drawerCatList .drawer-item").forEach(d => {
+        d.classList.toggle("active", d.dataset.cat === SELECTED_CAT);
       });
       applyFilters();
     };
@@ -439,7 +488,7 @@
       return `
         <div class="card" data-id="${m.id}">
           <div class="thumb-wrap">
-            <span class="badge">${m.badge || 'HD'}</span>
+            <span class="badge">${m.badge || '4K'}</span>
             ${m.year ? `<span class="year-badge">${m.year}</span>` : ''}
             ${isSeries ? `<span class="series-badge">WEB SERIES</span>` : ''}
             <img class="thumb" src="${hdPoster}" alt="${m.title || ''}" loading="lazy" />
@@ -452,11 +501,10 @@
       searchSection.style.display = "block";
       counterBar.style.display = "flex";
       if (!list || list.length === 0) {
-        appEl.innerHTML = `<p style="text-align:center; color:#888; padding:40px 0;">कोई मूवी या वेब सीरीज़ नहीं मिली। नीचे 🎬 Request बटन से रिक्वेस्ट भेजें!</p>`;
+        appEl.innerHTML = `<p style="text-align:center; color:#888; padding:40px 0;">कोई मूवी या वेब सीरीज़ नहीं मिली। नीचे 🎬 Request Movie से रिक्वेस्ट भेजें!</p>`;
         return;
       }
       appEl.innerHTML = `<div class="grid">${list.map(m => createCardHTML(m)).join("")}</div>`;
-
       document.querySelectorAll(".card").forEach(card => {
         card.addEventListener("click", () => openMovie(card.dataset.id));
       });
@@ -486,14 +534,10 @@
           <div class="trailer-box">
             <strong style="color:#ff3b30; font-size:14.5px;">🎬 OFFICIAL TRAILER</strong>
             ${embedUrl ? `<div class="trailer-frame"><iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>` : ''}
-            <a href="${m.trailer}" target="_blank" rel="nofollow noopener" class="yt-btn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-              Watch Trailer on YouTube
-            </a>
+            <a href="${m.trailer}" target="_blank" rel="nofollow noopener" class="yt-btn">▶️ Watch Trailer on YouTube</a>
           </div>`;
       }
 
-      // PlayerJet changed from "Watch Online" to "Fast Download"
       let linksSectionHTML = "";
       if (isSeries && episodes.length > 0) {
         linksSectionHTML = `
@@ -530,27 +574,25 @@
           </div>` : ''}`;
       }
 
-      // Build Suggested Movies / Web Series (Prioritize same category, then latest)
+      // Suggested Movies & Web Series
       const currentCats = Array.isArray(m.categories) ? m.categories : [];
       const otherMovies = ALL_MOVIES.filter(item => item.id !== id);
       const sameCatMovies = otherMovies.filter(item => {
         const iCats = Array.isArray(item.categories) ? item.categories : [];
         return iCats.some(c => currentCats.includes(c));
       });
-      const fallbackMovies = otherMovies.filter(item => !sameCatMovies.includes(item));
-      const suggestedList = [...sameCatMovies, ...fallbackMovies].slice(0, 6);
+      const suggestedList = [...sameCatMovies, ...otherMovies.filter(i => !sameCatMovies.includes(i))].slice(0, 6);
 
       const suggestedHTML = suggestedList.length > 0 ? `
         <div class="suggest-section">
           <div class="suggest-title">
-            <span>🔥 More Suggested Movies &amp; Web Series</span>
+            <span>🔥 Suggested Movies &amp; Web Series</span>
             <span style="font-size:12px; color:#aaa; cursor:pointer;" id="viewAllSuggest">View All &#8594;</span>
           </div>
-          <div class="grid">
-            ${suggestedList.map(item => createCardHTML(item)).join("")}
-          </div>
-        </div>
-      ` : "";
+          <div class="grid">${suggestedList.map(item => createCardHTML(item)).join("")}</div>
+        </div>` : "";
+
+      const midAdHTML = ADS_DATA.movieAd ? `<div class="ad-slot" style="margin-bottom:14px;">${ADS_DATA.movieAd}</div>` : "";
 
       appEl.innerHTML = `
         <div class="movie-detail">
@@ -562,30 +604,25 @@
             ${isSeries && m.season ? `<div><strong style="color:#00d2ff;">📺 Season:</strong> ${m.season}</div>` : ''}
             ${catText ? `<div><strong style="color:#00d2ff;">📂 Category:</strong> ${catText}</div>` : ''}
             <div><strong style="color:#00d2ff;">🗣️ Language & Rating:</strong> ${m.language || 'Hindi'}</div>
-            <div><strong style="color:#00d2ff;">🎞️ Quality:</strong> ${m.badge || 'HD / FHD / 4K'}</div>
+            <div><strong style="color:#00d2ff;">🎞️ Quality:</strong> ${m.badge || '4K / FHD / HD'}</div>
             ${m.story ? `<div style="margin-top:8px; padding-top:8px; border-top:1px solid #2a2a2a; color:#bbb;"><strong style="color:#ffcc00;">📝 Storyline:</strong> ${m.story}</div>` : ''}
           </div>
 
+          ${midAdHTML}
           ${trailerHTML}
-
           ${screenshotsHTML ? `<h3 style="text-align:center; color:#ff4d4d; font-size:15px; margin-bottom:10px;">📸 SCREENSHOTS</h3><div class="ss-grid">${screenshotsHTML}</div>` : ''}
-
           ${linksSectionHTML}
 
-          <!-- Permanent Video Tutorials -->
+          <!-- Permanent Tutorials -->
           <div class="tut-box">
-            <p style="color:#fbbf24; font-weight:bold; font-size:13.5px;">🎥 लिंक से वीडियो कैसे प्ले या डाउनलोड करें? (Video Tutorial देखें)</p>
+            <p style="color:#fbbf24; font-weight:bold; font-size:13.5px;">🎥 लिंक से वीडियो कैसे डाउनलोड करें? (Video Tutorial देखें)</p>
             <div class="tut-grid">
-              <a href="https://drive.google.com/file/d/13SEVOuoGSFHqyxzsuXg8VVN5mtpYjyIE/view?usp=drivesdk" target="_blank" rel="nofollow noopener" class="tut-btn tut-pj">
-                ⚡ How to Open PlayerJet Link
-              </a>
-              <a href="https://drive.google.com/file/d/1kKRCu5x12qzZfI-ut_ohSrdhAbHMKjw5/view?usp=drivesdk" target="_blank" rel="nofollow noopener" class="tut-btn tut-dw">
-                ⬇️ How to Open Diskwala Link
-              </a>
+              <a href="https://drive.google.com/file/d/13SEVOuoGSFHqyxzsuXg8VVN5mtpYjyIE/view?usp=drivesdk" target="_blank" rel="nofollow noopener" class="tut-btn tut-pj">⚡ How to Open PlayerJet Link</a>
+              <a href="https://drive.google.com/file/d/1kKRCu5x12qzZfI-ut_ohSrdhAbHMKjw5/view?usp=drivesdk" target="_blank" rel="nofollow noopener" class="tut-btn tut-dw">⬇️ How to Open Diskwala Link</a>
             </div>
           </div>
 
-          <!-- Permanent App Install & Community Links -->
+          <!-- Permanent Apps & Community -->
           <div class="app-box">
             <p style="color:#ffcc00; font-weight:bold; font-size:13.5px;">📲 जरूरी ऐप्स इंस्टॉल करें और हमारे चैनल से जुड़ें:</p>
             <div class="app-btns">
@@ -595,6 +632,15 @@
               <a href="https://whatsapp.com/channel/0029VajHSN9FnSz78ivaD61V" target="_blank" rel="nofollow noopener" class="app-btn" style="border:1px solid #25D366; color:#4ade80;">💬 Join WhatsApp Channel</a>
             </div>
           </div>
+
+          <!-- Movie Comment Box -->
+          <div class="comment-box">
+            <h3>💬 Comments &amp; Feedback</h3>
+            <input type="text" id="cmtUser" class="cmt-input" placeholder="आपका नाम (Your Name)" value="${localStorage.getItem("4km_user") || ""}" />
+            <textarea id="cmtText" class="cmt-input" rows="2" placeholder="इस मूवी या लिंक के बारे में कमेंट लिखें..."></textarea>
+            <button class="cmt-btn" id="postCmtBtn">Post Comment</button>
+            <div class="cmt-list" id="cmtList">Loading comments...</div>
+          </div>
         </div>
 
         ${suggestedHTML}
@@ -603,11 +649,58 @@
       document.getElementById("backHomeBtn").addEventListener("click", showHome);
       const viewAllEl = document.getElementById("viewAllSuggest");
       if (viewAllEl) viewAllEl.addEventListener("click", showHome);
-
       document.querySelectorAll(".suggest-section .card").forEach(card => {
         card.addEventListener("click", () => openMovie(card.dataset.id));
       });
+
+      // Load & Post Comments for this Movie
+      loadComments(id);
+      document.getElementById("postCmtBtn").onclick = () => postComment(id);
     };
+
+    async function loadComments(movieId) {
+      const box = document.getElementById("cmtList");
+      try {
+        const res = await fetch(`${DB_COMMENTS}/${movieId}.json?t=${Date.now()}`);
+        const data = await res.json();
+        if (!data) {
+          box.innerHTML = `<p style="color:#777; font-size:12.5px;">अभी कोई कमेंट नहीं है। पहला कमेंट करें!</p>`;
+          return;
+        }
+        const list = Object.values(data).sort((a, b) => (b.time || 0) - (a.time || 0));
+        box.innerHTML = list.map(c => `
+          <div class="cmt-item ${c.isAdmin ? 'admin-cmt' : ''}">
+            <div style="display:flex; justify-content:space-between; font-size:11.5px; color:#ffcc00; font-weight:bold; margin-bottom:3px;">
+              <span>${c.isAdmin ? '👑 4kmoviez5u Admin' : '👤 ' + (c.user || 'User')}</span>
+              <span style="color:#777; font-weight:normal;">${new Date(c.time || Date.now()).toLocaleDateString()}</span>
+            </div>
+            <div style="color:#eee;">${c.text}</div>
+          </div>
+        `).join("");
+      } catch (e) {}
+    }
+
+    async function postComment(movieId) {
+      const text = document.getElementById("cmtText").value.trim();
+      if (!text) return alert("कृपया कमेंट लिखें!");
+      const user = document.getElementById("cmtUser").value.trim() || "User";
+      localStorage.setItem("4km_user", user);
+      const btn = document.getElementById("postCmtBtn");
+      btn.disabled = true;
+      btn.innerText = "Posting...";
+      try {
+        await fetch(`${DB_COMMENTS}/${movieId}.json`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user, text, isAdmin: false, time: Date.now() })
+        });
+        document.getElementById("cmtText").value = "";
+        await loadComments(movieId);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Post Comment";
+      }
+    }
 
     function showHome() {
       history.pushState({}, "", window.location.pathname);
@@ -617,7 +710,7 @@
       document.getElementById("qualFilter").value = "";
       SELECTED_CAT = "";
       SELECTED_TYPE = "all";
-      document.querySelectorAll(".cat-pill").forEach(p => p.classList.toggle("active", p.dataset.cat === ""));
+      document.querySelectorAll("#drawerCatList .drawer-item").forEach(d => d.classList.toggle("active", d.dataset.cat === ""));
       renderGrid(ALL_MOVIES);
     }
 
@@ -650,22 +743,26 @@
       renderGrid(filtered);
     }
 
-    document.querySelectorAll(".cat-pill").forEach(pill => {
-      pill.addEventListener("click", () => {
-        document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
-        pill.classList.add("active");
-        SELECTED_CAT = pill.dataset.cat;
+    // Left 3-Line Category Selection
+    document.querySelectorAll("#drawerCatList .drawer-item").forEach(item => {
+      item.addEventListener("click", () => {
+        document.querySelectorAll("#drawerCatList .drawer-item").forEach(i => i.classList.remove("active"));
+        item.classList.add("active");
+        SELECTED_CAT = item.dataset.cat;
         SELECTED_TYPE = "all";
+        closeDrawer();
+        if (window.location.hash) history.pushState({}, "", window.location.pathname);
         applyFilters();
       });
     });
 
-    // Movie Request System
+    // Movie Request Modal
     const reqModal = document.getElementById("reqModal");
-    document.getElementById("openReqModalBtn").onclick = () => {
+    window.openReqModal = function() {
       reqModal.style.display = "flex";
       loadRecentRequests();
     };
+    document.getElementById("openReqModalBtn").onclick = openReqModal;
     document.getElementById("closeReqModal").onclick = () => reqModal.style.display = "none";
 
     async function loadRecentRequests() {
@@ -674,13 +771,12 @@
         const res = await fetch(DB_REQS + "?t=" + Date.now());
         const data = await res.json();
         if (!data) { box.innerHTML = "<p>अभी कोई रिक्वेस्ट नहीं है।</p>"; return; }
-        const list = Object.values(data).sort((a, b) => (b.time || 0) - (a.time || 0)).slice(0, 8);
+        const list = Object.values(data).sort((a, b) => (b.time || 0) - (a.time || 0)).slice(0, 6);
         box.innerHTML = "<strong style='color:#ffcc00;'>📋 Recent Requests:</strong>" + list.map(r => `
           <div style="background:#1d1d1d; padding:6px 8px; border-radius:5px; margin-top:5px; display:flex; justify-content:space-between;">
-            <span>🎬 ${r.movie} (${r.details || 'HD'})</span>
+            <span>🎬 ${r.movie}</span>
             <span style="color:${r.status === 'Uploaded' ? '#4ade80' : '#fbbf24'}; font-weight:bold;">${r.status || 'Pending'}</span>
-          </div>
-        `).join("");
+          </div>`).join("");
       } catch (e) {}
     }
 
@@ -702,65 +798,14 @@
             time: Date.now()
           })
         });
-        alert("✅ आपकी रिक्वेस्ट Admin को भेज दी गई है!");
+        alert("✅ आपकी रिक्वेस्ट भेज दी गई है!");
         document.getElementById("reqMovieName").value = "";
         document.getElementById("reqDetails").value = "";
         loadRecentRequests();
-      } catch (e) {
-        alert("Error: " + e.message);
       } finally {
         btn.disabled = false;
-        btn.innerText = "📩 Send Request to Admin";
+        btn.innerText = "📩 Send Request";
       }
-    };
-
-    // Live Community Chat System
-    const chatModal = document.getElementById("chatModal");
-    let chatTimer = null;
-
-    document.getElementById("openChatModalBtn").onclick = () => {
-      chatModal.style.display = "flex";
-      loadChatMessages();
-      chatTimer = setInterval(loadChatMessages, 4000);
-    };
-    document.getElementById("closeChatModal").onclick = () => {
-      chatModal.style.display = "none";
-      clearInterval(chatTimer);
-    };
-
-    async function loadChatMessages() {
-      const box = document.getElementById("chatMsgsBox");
-      try {
-        const res = await fetch(DB_CHAT + "?t=" + Date.now());
-        const data = await res.json();
-        if (!data) { box.innerHTML = "<p style='color:#777; text-align:center;'>चैट शुरू करें! पहला मैसेज भेजें...</p>"; return; }
-        const msgs = Object.values(data).sort((a, b) => (a.time || 0) - (b.time || 0)).slice(-30);
-        box.innerHTML = msgs.map(m => `
-          <div class="chat-bubble ${m.isAdmin ? 'admin-msg' : ''}">
-            <div class="chat-meta">
-              <span>${m.isAdmin ? '👑 ADMIN (CineZenix)' : '👤 ' + (m.user || 'Guest')}</span>
-              <span style="color:#777; font-weight:normal;">${new Date(m.time || Date.now()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-            </div>
-            <div style="color:#eee;">${m.text}</div>
-          </div>
-        `).join("");
-        box.scrollTop = box.scrollHeight;
-      } catch (e) {}
-    }
-
-    document.getElementById("sendChatBtn").onclick = async () => {
-      const text = document.getElementById("chatText").value.trim();
-      if (!text) return;
-      const user = document.getElementById("chatUserName").value.trim() || "Guest";
-      localStorage.setItem("cz_chat_name", user);
-      document.getElementById("chatText").value = "";
-
-      await fetch(DB_CHAT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user, text, isAdmin: false, time: Date.now() })
-      });
-      loadChatMessages();
     };
 
     document.getElementById("homeHeader").addEventListener("click", showHome);
@@ -776,7 +821,7 @@
       else applyFilters();
     });
 
-    loadMoviesFromDB();
+    initApp();
   </script>
 </body>
 </html>
