@@ -136,7 +136,7 @@
     </div>
     <div class="filter-row">
       <select id="yearFilter" class="filter-select">
-        <option value="">📅 All Years</option>
+        <option value="" selected>📅 All Years</option>
         <option value="2026">2026</option>
         <option value="2025">2025</option>
         <option value="2024">2024</option>
@@ -146,7 +146,7 @@
         <option value="2020">2020</option>
       </select>
       <select id="langFilter" class="filter-select">
-        <option value="">🗣️ All Languages</option>
+        <option value="" selected>🗣️ All Languages</option>
         <option value="Hindi">Hindi</option>
         <option value="English">English</option>
         <option value="Dual Audio">Dual Audio</option>
@@ -159,7 +159,7 @@
         <option value="Bhojpuri">Bhojpuri</option>
       </select>
       <select id="qualFilter" class="filter-select">
-        <option value="">🎞️ All Qualities</option>
+        <option value="" selected>🎞️ All Qualities</option>
         <option value="4K">4K</option>
         <option value="FHD">FHD (1080p)</option>
         <option value="HD">HD (720p)</option>
@@ -187,27 +187,18 @@
     &copy; 2026 <span>CineZenix XYZ</span>. All Rights Reserved.
   </footer>
 
-  <!-- Firebase Realtime Database SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBmAD-rHHzIt53MLX4KvjV_WYVnzLB8pKw",
-      authDomain: "cinezenix-movie-app.firebaseapp.com",
-      databaseURL: "https://cinezenix-movie-app-default-rtdb.firebaseio.com",
-      projectId: "cinezenix-movie-app",
-      storageBucket: "cinezenix-movie-app.firebasestorage.app",
-      messagingSenderId: "890785699893",
-      appId: "1:890785699893:web:93d83594334fabcd09797c"
-    };
-
-    const firebaseApp = initializeApp(firebaseConfig);
-    const db = getDatabase(firebaseApp);
+  <!-- Fast REST API + Live Sync Script -->
+  <script>
+    const DB_URL = "https://cinezenix-movie-app-default-rtdb.firebaseio.com/movies.json";
 
     let ALL_MOVIES = [];
     const appEl = document.getElementById("app");
     const searchSection = document.getElementById("searchSection");
+
+    // Reset Filters on fresh load so all movies show by default
+    document.getElementById("yearFilter").value = "";
+    document.getElementById("langFilter").value = "";
+    document.getElementById("qualFilter").value = "";
 
     // Notification Permission
     if ("Notification" in window && Notification.permission === "default" && !localStorage.getItem("cz_notif_dismissed")) {
@@ -237,36 +228,45 @@
       return match ? `https://www.youtube.com/embed/${match[1]}?rel=0` : "";
     }
 
-    // Load Movies from Realtime Database
-    const moviesRef = ref(db, "movies");
-    onValue(moviesRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        ALL_MOVIES = Object.keys(data).map(key => ({
-          id: key,
-          ...data[key]
-        })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-      } else {
-        ALL_MOVIES = [];
-      }
+    // Fast Fetch from Firebase Realtime Database REST API (Never blocked by Brave/Adblock)
+    async function loadMoviesFromDB() {
+      try {
+        const res = await fetch(DB_URL + "?t=" + Date.now());
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
 
-      const hash = window.location.hash.replace("#", "");
-      if (hash) openMovie(hash);
-      else applyFilters();
-    }, (error) => {
-      appEl.innerHTML = `<p style="text-align:center; color:#ff4d4d; padding:30px;">Database Error: ${error.message}</p>`;
-    });
+        if (data) {
+          ALL_MOVIES = Object.keys(data).map(key => ({
+            id: key,
+            ...data[key]
+          })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        } else {
+          ALL_MOVIES = [];
+        }
+
+        const hash = window.location.hash.replace("#", "");
+        if (hash) openMovie(hash);
+        else applyFilters();
+      } catch (err) {
+        appEl.innerHTML = `
+          <div style="text-align:center; padding:30px; color:#ff4d4d;">
+            <p>Movies लोड नहीं हो पाईं (${err.message})</p>
+            <button onclick="location.reload()" style="margin-top:12px; background:#e50914; color:#fff; border:none; padding:9px 18px; border-radius:6px; font-weight:bold; cursor:pointer;">🔄 Retry</button>
+          </div>`;
+      }
+    }
 
     function renderGrid(list) {
       searchSection.style.display = "block";
       if (list.length === 0) {
-        appEl.innerHTML = `<p style="text-align:center; color:#888; padding:40px 0;">कोई मूवी नहीं मिली। फिल्टर बदलें या Admin Panel से नई मूवी जोड़ें।</p>`;
+        appEl.innerHTML = `<p style="text-align:center; color:#888; padding:40px 0;">कोई मूवी नहीं मिली। ऊपर फिल्टर बदलें या Admin Panel से नई मूवी जोड़ें।</p>`;
         return;
       }
       appEl.innerHTML = `<div class="grid">${list.map(m => `
         <div class="card" data-id="${m.id}">
           <div class="thumb-wrap">
-            <span class="badge">${m.badge \vert{}\vert{} 'HD'}</span>${m.year ? `<span class="year-badge">${m.year}</span>` : ''}
+            <span class="badge">${m.badge || 'HD'}</span>
+            ${m.year ? `<span class="year-badge">${m.year}</span>` : ''}
             <img class="thumb" src="${m.poster}" alt="${m.title}" loading="lazy" />
           </div>
           <div class="card-title">${m.title}</div>
@@ -402,6 +402,9 @@
       if (hash) openMovie(hash);
       else applyFilters();
     });
+
+    // Start loading immediately
+    loadMoviesFromDB();
   </script>
 </body>
 </html>
