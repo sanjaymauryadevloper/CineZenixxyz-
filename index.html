@@ -32,7 +32,7 @@
 
     .filter-row { display: flex; gap: 7px; margin-top: 10px; justify-content: center; flex-wrap: wrap; }
     .filter-select, .filter-year-input { background: #181818; color: #e5e5e5; border: 1px solid #333; padding: 7px 11px; border-radius: 20px; font-size: 12.5px; outline: none; }
-    .filter-year-input { width: 105px; text-align: center; }
+    .filter-year-input { width: 112px; text-align: center; }
     .filter-select:focus, .filter-year-input:focus { border-color: #e50914; }
 
     /* Category Pills Bar */
@@ -158,7 +158,7 @@
     </div>
 
     <div class="filter-row">
-      <input type="number" id="yearFilter" class="filter-year-input" placeholder="📅 Year (2026)" min="1950" max="2035" />
+      <input type="text" id="yearFilter" class="filter-year-input" placeholder="📅 Year (All)" inputmode="numeric" />
       <select id="langFilter" class="filter-select">
         <option value="" selected>🗣️ All Languages</option>
         <option value="Hindi">Hindi</option>
@@ -201,7 +201,7 @@
     &copy; 2026 <span>CineZenix XYZ</span>. All Rights Reserved.
   </footer>
 
-  <!-- Fast REST API Script -->
+  <!-- Safe & Fast Script -->
   <script>
     const DB_URL = "https://cinezenix-movie-app-default-rtdb.firebaseio.com/movies.json";
 
@@ -210,58 +210,64 @@
     const appEl = document.getElementById("app");
     const searchSection = document.getElementById("searchSection");
 
-    // Auto HD Image URL Enhancer (Fixes low-res Google/Blogger/TMDb links automatically)
+    // Force clear inputs on page load
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("yearFilter").value = "";
+      document.getElementById("langFilter").value = "";
+      document.getElementById("qualFilter").value = "";
+    });
+
     function enhancePosterQuality(url) {
-      if (!url) return "";
+      if (!url || typeof url !== "string") return "";
       let clean = url.trim();
-      // Upgrade Google/Blogger thumbnail sizes (e.g. =w200-h300 or /s320/) to =w800
       clean = clean.replace(/=w\d+(-h\d+)?(-[a-zA-Z0-9_-]+)?$/i, "=w800");
       clean = clean.replace(/\/s\d+(-c)?\//i, "/s800/");
-      // Upgrade TMDb low-res posters (w200/w300) to w780 HD
       clean = clean.replace(/image\.tmdb\.org\/t\/p\/w(185|200|300|342|500)\//i, "image.tmdb.org/t/p/w780/");
       return clean;
     }
 
-    // Notification Permission
-    if ("Notification" in window && Notification.permission === "default" && !localStorage.getItem("cz_notif_dismissed")) {
-      setTimeout(() => {
-        document.getElementById("notifBanner").style.display = "flex";
-      }, 2500);
-    }
-
-    document.getElementById("allowNotifBtn").addEventListener("click", async () => {
-      document.getElementById("notifBanner").style.display = "none";
-      const perm = await Notification.requestPermission();
-      if (perm === "granted") {
-        new Notification("CineZenix XYZ", { body: "Notifications Enabled! अब आपको नई मूवीज के अपडेट मिलेंगे।" });
+    // Notification Banner
+    try {
+      if ("Notification" in window && Notification.permission === "default" && !localStorage.getItem("cz_notif_dismissed")) {
+        setTimeout(() => {
+          document.getElementById("notifBanner").style.display = "flex";
+        }, 2500);
       }
-    });
+      document.getElementById("allowNotifBtn").addEventListener("click", async () => {
+        document.getElementById("notifBanner").style.display = "none";
+        const perm = await Notification.requestPermission();
+        if (perm === "granted") {
+          new Notification("CineZenix XYZ", { body: "Notifications Enabled!" });
+        }
+      });
+      document.getElementById("closeNotifBtn").addEventListener("click", () => {
+        document.getElementById("notifBanner").style.display = "none";
+        localStorage.setItem("cz_notif_dismissed", "1");
+      });
+    } catch (e) {}
 
-    document.getElementById("closeNotifBtn").addEventListener("click", () => {
-      document.getElementById("notifBanner").style.display = "none";
-      localStorage.setItem("cz_notif_dismissed", "1");
-    });
-
-    // Safe YouTube ID Extractor
     function getYouTubeEmbed(url) {
-      if (!url) return "";
+      if (!url || typeof url !== "string") return "";
       const regExp = /(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
       const match = url.match(regExp);
       return match ? `https://www.youtube.com/embed/${match[1]}?rel=0` : "";
     }
 
-    // Load Movies from Realtime Database
     async function loadMoviesFromDB() {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
       try {
-        const res = await fetch(DB_URL + "?t=" + Date.now());
-        if (!res.ok) throw new Error("HTTP " + res.status);
+        const res = await fetch(DB_URL + "?t=" + Date.now(), { signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (!res.ok) throw new Error("Server Status " + res.status);
         const data = await res.json();
 
-        if (data) {
+        if (data && typeof data === "object") {
           ALL_MOVIES = Object.keys(data).map(key => ({
             id: key,
-            ...data[key]
-          })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            ...(data[key] || {})
+          })).sort((a, b) => (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0));
         } else {
           ALL_MOVIES = [];
         }
@@ -270,17 +276,22 @@
         if (hash) openMovie(hash);
         else applyFilters();
       } catch (err) {
+        clearTimeout(timeoutId);
         appEl.innerHTML = `
           <div style="text-align:center; padding:30px; color:#ff4d4d;">
-            <p>Movies लोड नहीं हो पाईं (${err.message})</p>
-            <button onclick="location.reload()" style="margin-top:12px; background:#e50914; color:#fff; border:none; padding:9px 18px; border-radius:6px; font-weight:bold; cursor:pointer;">🔄 Retry</button>
+            <p>Movies लोड होने में समय लग रहा है (${err.name === 'AbortError' ? 'Slow Network' : err.message})</p>
+            <button id="retryBtn" style="margin-top:12px; background:#e50914; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-weight:bold; cursor:pointer;">🔄 Reload Movies</button>
           </div>`;
+        document.getElementById("retryBtn").onclick = () => {
+          appEl.innerHTML = `<p style="text-align:center; color:#888; padding:40px 0;">Loading movies...</p>`;
+          loadMoviesFromDB();
+        };
       }
     }
 
     function renderGrid(list) {
       searchSection.style.display = "block";
-      if (list.length === 0) {
+      if (!list || list.length === 0) {
         appEl.innerHTML = `<p style="text-align:center; color:#888; padding:40px 0;">कोई मूवी नहीं मिली। ऊपर फिल्टर बदलें या Admin Panel से नई मूवी जोड़ें।</p>`;
         return;
       }
@@ -289,11 +300,12 @@
         return `
         <div class="card" data-id="${m.id}">
           <div class="thumb-wrap">
-            <span class="badge">${m.badge \vert{}\vert{} 'HD'}</span>${m.year ? `<span class="year-badge">${m.year}</span>` : ''}
+            <span class="badge">${m.badge || 'HD'}</span>
+            ${m.year ? `<span class="year-badge">${m.year}</span>` : ''}
             <img class="thumb-bg" src="${hdPoster}" alt="" aria-hidden="true" />
-            <img class="thumb" src="${hdPoster}" alt="${m.title}" loading="lazy" />
+            <img class="thumb" src="${hdPoster}" alt="${m.title || ''}" loading="lazy" />
           </div>
-          <div class="card-title">${m.title}</div>
+          <div class="card-title">${m.title || 'Untitled'}</div>
         </div>
       `}).join("")}</div>`;
 
@@ -310,14 +322,15 @@
       history.pushState({ id }, "", "#" + id);
 
       const hdPoster = enhancePosterQuality(m.poster);
-      const screenshotsHTML = (m.screenshots || []).filter(s => s && s.trim() !== "").map(s => `<img src="${enhancePosterQuality(s)}" loading="lazy" />`).join("");
+      const ssList = Array.isArray(m.screenshots) ? m.screenshots : [];
+      const screenshotsHTML = ssList.filter(s => s && String(s).trim() !== "").map(s => `<img src="${enhancePosterQuality(s)}" loading="lazy" />`).join("");
       const embedUrl = getYouTubeEmbed(m.trailer);
       const hasPJ = m.pj480 || m.pj720 || m.pj1080 || m.pj4k;
       const hasDW = m.dw480 || m.dw720 || m.dw1080 || m.dw4k;
       const catText = Array.isArray(m.categories) ? m.categories.join(", ") : (m.categories || "");
 
       let trailerHTML = "";
-      if (m.trailer && m.trailer.trim() !== "") {
+      if (m.trailer && String(m.trailer).trim() !== "") {
         trailerHTML = `
           <div class="trailer-box">
             <strong style="color:#ff3b30; font-size:14.5px;">🎬 OFFICIAL TRAILER</strong>
@@ -332,9 +345,9 @@
       appEl.innerHTML = `
         <div class="movie-detail">
           <div class="back-btn" id="backHomeBtn">&#8592; Back to Home</div>
-          <div class="poster-box"><img src="${hdPoster}" alt="${m.title}" /></div>
+          <div class="poster-box"><img src="${hdPoster}" alt="${m.title || ''}" /></div>
           <div class="info-box">
-            <h2>${m.title}</h2>
+            <h2>${m.title || 'Untitled'}</h2>
             ${m.year ? `<div><strong style="color:#00d2ff;">📅 Release Year:</strong> ${m.year}</div>` : ''}
             ${catText ? `<div><strong style="color:#00d2ff;">📂 Category:</strong> ${catText}</div>` : ''}
             <div><strong style="color:#00d2ff;">🗣️ Language & Rating:</strong> ${m.language || 'Hindi'}</div>
@@ -404,24 +417,28 @@
     }
 
     function applyFilters() {
-      const q = document.getElementById("searchInput").value.toLowerCase().trim();
-      const y = document.getElementById("yearFilter").value.trim();
-      const l = document.getElementById("langFilter").value.toLowerCase();
-      const ql = document.getElementById("qualFilter").value.toUpperCase();
+      const q = (document.getElementById("searchInput").value || "").toLowerCase().trim();
+      const y = (document.getElementById("yearFilter").value || "").trim();
+      const l = (document.getElementById("langFilter").value || "").toLowerCase();
+      const ql = (document.getElementById("qualFilter").value || "").toUpperCase();
 
       const filtered = ALL_MOVIES.filter(m => {
-        const matchText = !q || (m.title && m.title.toLowerCase().includes(q));
-        const matchYear = !y || String(m.year || "").includes(y) || (m.title && m.title.includes(y));
-        const matchLang = !l || (m.language && m.language.toLowerCase().includes(l));
-        const matchQual = !ql || (m.badge && m.badge.toUpperCase().includes(ql));
-        const cats = Array.isArray(m.categories) ? m.categories.join(" ").toLowerCase() : String(m.categories || "").toLowerCase();
-        const matchCat = !SELECTED_CAT || cats.includes(SELECTED_CAT.toLowerCase()) || (m.title && m.title.toLowerCase().includes(SELECTED_CAT.toLowerCase()));
+        const titleStr = String(m.title || "");
+        const yearStr = String(m.year || "");
+        const langStr = String(m.language || "");
+        const badgeStr = String(m.badge || "");
+        const catsStr = Array.isArray(m.categories) ? m.categories.join(" ") : String(m.categories || "");
+
+        const matchText = !q || titleStr.toLowerCase().includes(q);
+        const matchYear = !y || yearStr.includes(y) || titleStr.includes(y);
+        const matchLang = !l || langStr.toLowerCase().includes(l);
+        const matchQual = !ql || badgeStr.toUpperCase().includes(ql);
+        const matchCat = !SELECTED_CAT || catsStr.toLowerCase().includes(SELECTED_CAT.toLowerCase()) || titleStr.toLowerCase().includes(SELECTED_CAT.toLowerCase());
         return matchText && matchYear && matchLang && matchQual && matchCat;
       });
       renderGrid(filtered);
     }
 
-    // Category Pill Click
     document.querySelectorAll(".cat-pill").forEach(pill => {
       pill.addEventListener("click", () => {
         document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
