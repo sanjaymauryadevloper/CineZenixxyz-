@@ -24,37 +24,45 @@
     .tg-pill { background: #229ED9; }
     .wa-pill { background: #25D366; color: #052e16; }
 
-    /* Search & Filter Section */
-    .search-wrap { max-width: 720px; margin: 12px auto 6px; padding: 0 12px; }
+    /* Search & Filters */
+    .search-wrap { max-width: 780px; margin: 12px auto 6px; padding: 0 12px; }
     .search-box { display: flex; background: #1a1a1a; border: 1px solid #333; border-radius: 25px; overflow: hidden; }
     .search-input { flex: 1; background: transparent; border: none; color: #fff; padding: 11px 16px; font-size: 14px; outline: none; }
     .search-btn { background: #e50914; color: #fff; border: none; padding: 0 18px; font-weight: bold; cursor: pointer; font-size: 14px; }
 
-    .filter-row { display: flex; gap: 8px; margin-top: 10px; justify-content: center; flex-wrap: wrap; }
-    .filter-select { background: #181818; color: #e5e5e5; border: 1px solid #333; padding: 7px 12px; border-radius: 20px; font-size: 12.5px; outline: none; cursor: pointer; }
-    .filter-select:focus { border-color: #e50914; }
+    .filter-row { display: flex; gap: 7px; margin-top: 10px; justify-content: center; flex-wrap: wrap; }
+    .filter-select, .filter-year-input { background: #181818; color: #e5e5e5; border: 1px solid #333; padding: 7px 11px; border-radius: 20px; font-size: 12.5px; outline: none; }
+    .filter-year-input { width: 105px; text-align: center; }
+    .filter-select:focus, .filter-year-input:focus { border-color: #e50914; }
+
+    /* Category Pills Bar */
+    .cat-bar { display: flex; gap: 6px; overflow-x: auto; padding: 8px 2px 4px; margin-top: 6px; scrollbar-width: none; }
+    .cat-bar::-webkit-scrollbar { display: none; }
+    .cat-pill { background: #1a1a1a; border: 1px solid #2e2e2e; color: #ccc; padding: 5px 12px; border-radius: 16px; font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; }
+    .cat-pill.active { background: #e50914; border-color: #e50914; color: #fff; }
 
     /* Container */
-    .container { max-width: 960px; margin: 14px auto; padding: 0 12px; }
+    .container { max-width: 960px; margin: 12px auto; padding: 0 12px; }
 
-    /* Homepage 2-Column Grid */
+    /* Homepage 2-Column Grid with Auto-Adjusted Poster Frame */
     .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
 
-    .card { background: #141414; border: 1px solid #242424; border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
+    .card { background: #141414; border: 1px solid #242424; border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.2s, border-color 0.2s; display: flex; flex-direction: column; }
     .card:hover { transform: translateY(-3px); border-color: #e50914; }
-    .thumb-wrap { position: relative; width: 100%; padding-top: 145%; background: #1e1e1e; }
-    .thumb { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-    .badge { position: absolute; top: 8px; left: 8px; background: rgba(229, 9, 20, 0.94); color: #fff; font-size: 10.5px; font-weight: bold; padding: 3px 8px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.6); }
-    .year-badge { position: absolute; top: 8px; right: 8px; background: rgba(0, 0, 0, 0.82); color: #ffcc00; border: 1px solid #444; font-size: 10.5px; font-weight: bold; padding: 2px 7px; border-radius: 4px; }
-    .card-title { padding: 10px 8px; font-size: 13.5px; font-weight: 600; color: #f0f0f0; text-align: center; line-height: 1.4; }
+    .thumb-wrap { position: relative; width: 100%; aspect-ratio: 2 / 3; background: #121212; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .thumb-bg { position: absolute; inset: -10px; width: calc(100% + 20px); height: calc(100% + 20px); object-fit: cover; filter: blur(14px) brightness(0.35); z-index: 1; }
+    .thumb { position: relative; z-index: 2; width: 100%; height: 100%; object-fit: contain; image-rendering: -webkit-optimize-contrast; }
+    .badge { position: absolute; top: 7px; left: 7px; z-index: 3; background: rgba(229, 9, 20, 0.95); color: #fff; font-size: 10px; font-weight: bold; padding: 3px 7px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.7); }
+    .year-badge { position: absolute; top: 7px; right: 7px; z-index: 3; background: rgba(0, 0, 0, 0.85); color: #ffcc00; border: 1px solid #444; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
+    .card-title { padding: 9px 8px; font-size: 13px; font-weight: 600; color: #f0f0f0; text-align: center; line-height: 1.35; background: #141414; flex: 1; display: flex; align-items: center; justify-content: center; }
 
     /* Single Movie Page */
     .movie-detail { max-width: 720px; margin: auto; background: #111111; border: 1px solid #262626; border-radius: 10px; padding: 16px; }
     .back-btn { display: inline-block; background: #222; color: #fff; padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: bold; margin-bottom: 14px; cursor: pointer; border: 1px solid #333; }
     .back-btn:hover { background: #e50914; border-color: #e50914; }
-    .poster-box { text-align: center; margin-bottom: 16px; }
-    .poster-box img { max-width: 240px; width: 100%; border-radius: 8px; border: 2px solid #2c2c2c; }
+    .poster-box { text-align: center; margin-bottom: 16px; background: #0a0a0a; padding: 10px; border-radius: 8px; border: 1px solid #222; }
+    .poster-box img { max-width: 260px; width: 100%; max-height: 380px; object-fit: contain; border-radius: 8px; image-rendering: -webkit-optimize-contrast; }
     .info-box { background: #181818; border: 1px solid #2b2b2b; border-radius: 8px; padding: 14px; margin-bottom: 18px; font-size: 14px; line-height: 1.8; }
     .info-box h2 { color: #ffcc00; font-size: 18px; text-align: center; margin-bottom: 10px; border-bottom: 1px dashed #3a3a3a; padding-bottom: 8px; }
 
@@ -66,7 +74,7 @@
 
     /* Screenshots */
     .ss-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
-    .ss-grid img { width: 100%; border-radius: 6px; border: 1px solid #333; }
+    .ss-grid img { width: 100%; border-radius: 6px; border: 1px solid #333; object-fit: cover; }
 
     /* Server Boxes */
     .server-box { border-radius: 8px; padding: 14px; margin-bottom: 16px; text-align: center; }
@@ -134,17 +142,23 @@
       <input type="text" id="searchInput" class="search-input" placeholder="Search movie or video name..." />
       <button class="search-btn" id="searchBtn">Search</button>
     </div>
+
+    <!-- Category Scroll Pills -->
+    <div class="cat-bar" id="catBar">
+      <span class="cat-pill active" data-cat="">🔥 All</span>
+      <span class="cat-pill" data-cat="Bollywood">Bollywood</span>
+      <span class="cat-pill" data-cat="Hollywood">Hollywood</span>
+      <span class="cat-pill" data-cat="South Movies">South Movies</span>
+      <span class="cat-pill" data-cat="Web Series">Web Series</span>
+      <span class="cat-pill" data-cat="Anime">Anime</span>
+      <span class="cat-pill" data-cat="Action">Action</span>
+      <span class="cat-pill" data-cat="Thriller">Thriller</span>
+      <span class="cat-pill" data-cat="Comedy">Comedy</span>
+      <span class="cat-pill" data-cat="Horror">Horror</span>
+    </div>
+
     <div class="filter-row">
-      <select id="yearFilter" class="filter-select">
-        <option value="" selected>📅 All Years</option>
-        <option value="2026">2026</option>
-        <option value="2025">2025</option>
-        <option value="2024">2024</option>
-        <option value="2023">2023</option>
-        <option value="2022">2022</option>
-        <option value="2021">2021</option>
-        <option value="2020">2020</option>
-      </select>
+      <input type="number" id="yearFilter" class="filter-year-input" placeholder="📅 Year (2026)" min="1950" max="2035" />
       <select id="langFilter" class="filter-select">
         <option value="" selected>🗣️ All Languages</option>
         <option value="Hindi">Hindi</option>
@@ -187,18 +201,26 @@
     &copy; 2026 <span>CineZenix XYZ</span>. All Rights Reserved.
   </footer>
 
-  <!-- Fast REST API + Live Sync Script -->
+  <!-- Fast REST API Script -->
   <script>
     const DB_URL = "https://cinezenix-movie-app-default-rtdb.firebaseio.com/movies.json";
 
     let ALL_MOVIES = [];
+    let SELECTED_CAT = "";
     const appEl = document.getElementById("app");
     const searchSection = document.getElementById("searchSection");
 
-    // Reset Filters on fresh load so all movies show by default
-    document.getElementById("yearFilter").value = "";
-    document.getElementById("langFilter").value = "";
-    document.getElementById("qualFilter").value = "";
+    // Auto HD Image URL Enhancer (Fixes low-res Google/Blogger/TMDb links automatically)
+    function enhancePosterQuality(url) {
+      if (!url) return "";
+      let clean = url.trim();
+      // Upgrade Google/Blogger thumbnail sizes (e.g. =w200-h300 or /s320/) to =w800
+      clean = clean.replace(/=w\d+(-h\d+)?(-[a-zA-Z0-9_-]+)?$/i, "=w800");
+      clean = clean.replace(/\/s\d+(-c)?\//i, "/s800/");
+      // Upgrade TMDb low-res posters (w200/w300) to w780 HD
+      clean = clean.replace(/image\.tmdb\.org\/t\/p\/w(185|200|300|342|500)\//i, "image.tmdb.org/t/p/w780/");
+      return clean;
+    }
 
     // Notification Permission
     if ("Notification" in window && Notification.permission === "default" && !localStorage.getItem("cz_notif_dismissed")) {
@@ -228,7 +250,7 @@
       return match ? `https://www.youtube.com/embed/${match[1]}?rel=0` : "";
     }
 
-    // Fast Fetch from Firebase Realtime Database REST API (Never blocked by Brave/Adblock)
+    // Load Movies from Realtime Database
     async function loadMoviesFromDB() {
       try {
         const res = await fetch(DB_URL + "?t=" + Date.now());
@@ -262,16 +284,18 @@
         appEl.innerHTML = `<p style="text-align:center; color:#888; padding:40px 0;">कोई मूवी नहीं मिली। ऊपर फिल्टर बदलें या Admin Panel से नई मूवी जोड़ें।</p>`;
         return;
       }
-      appEl.innerHTML = `<div class="grid">${list.map(m => `
+      appEl.innerHTML = `<div class="grid">${list.map(m => {
+        const hdPoster = enhancePosterQuality(m.poster);
+        return `
         <div class="card" data-id="${m.id}">
           <div class="thumb-wrap">
-            <span class="badge">${m.badge || 'HD'}</span>
-            ${m.year ? `<span class="year-badge">${m.year}</span>` : ''}
-            <img class="thumb" src="${m.poster}" alt="${m.title}" loading="lazy" />
+            <span class="badge">${m.badge \vert{}\vert{} 'HD'}</span>${m.year ? `<span class="year-badge">${m.year}</span>` : ''}
+            <img class="thumb-bg" src="${hdPoster}" alt="" aria-hidden="true" />
+            <img class="thumb" src="${hdPoster}" alt="${m.title}" loading="lazy" />
           </div>
           <div class="card-title">${m.title}</div>
         </div>
-      `).join("")}</div>`;
+      `}).join("")}</div>`;
 
       document.querySelectorAll(".card").forEach(card => {
         card.addEventListener("click", () => openMovie(card.dataset.id));
@@ -285,10 +309,12 @@
       window.scrollTo(0, 0);
       history.pushState({ id }, "", "#" + id);
 
-      const screenshotsHTML = (m.screenshots || []).filter(s => s && s.trim() !== "").map(s => `<img src="${s}" loading="lazy" />`).join("");
+      const hdPoster = enhancePosterQuality(m.poster);
+      const screenshotsHTML = (m.screenshots || []).filter(s => s && s.trim() !== "").map(s => `<img src="${enhancePosterQuality(s)}" loading="lazy" />`).join("");
       const embedUrl = getYouTubeEmbed(m.trailer);
       const hasPJ = m.pj480 || m.pj720 || m.pj1080 || m.pj4k;
       const hasDW = m.dw480 || m.dw720 || m.dw1080 || m.dw4k;
+      const catText = Array.isArray(m.categories) ? m.categories.join(", ") : (m.categories || "");
 
       let trailerHTML = "";
       if (m.trailer && m.trailer.trim() !== "") {
@@ -306,10 +332,11 @@
       appEl.innerHTML = `
         <div class="movie-detail">
           <div class="back-btn" id="backHomeBtn">&#8592; Back to Home</div>
-          <div class="poster-box"><img src="${m.poster}" alt="${m.title}" /></div>
+          <div class="poster-box"><img src="${hdPoster}" alt="${m.title}" /></div>
           <div class="info-box">
             <h2>${m.title}</h2>
             ${m.year ? `<div><strong style="color:#00d2ff;">📅 Release Year:</strong> ${m.year}</div>` : ''}
+            ${catText ? `<div><strong style="color:#00d2ff;">📂 Category:</strong> ${catText}</div>` : ''}
             <div><strong style="color:#00d2ff;">🗣️ Language & Rating:</strong> ${m.language || 'Hindi'}</div>
             <div><strong style="color:#00d2ff;">🎞️ Quality:</strong> ${m.badge || 'HD / FHD / 4K'}</div>
             ${m.story ? `<div style="margin-top:8px; padding-top:8px; border-top:1px solid #2a2a2a; color:#bbb;"><strong style="color:#ffcc00;">📝 Storyline:</strong> ${m.story}</div>` : ''}
@@ -371,29 +398,43 @@
       document.getElementById("yearFilter").value = "";
       document.getElementById("langFilter").value = "";
       document.getElementById("qualFilter").value = "";
+      SELECTED_CAT = "";
+      document.querySelectorAll(".cat-pill").forEach(p => p.classList.toggle("active", p.dataset.cat === ""));
       renderGrid(ALL_MOVIES);
     }
 
     function applyFilters() {
       const q = document.getElementById("searchInput").value.toLowerCase().trim();
-      const y = document.getElementById("yearFilter").value;
+      const y = document.getElementById("yearFilter").value.trim();
       const l = document.getElementById("langFilter").value.toLowerCase();
       const ql = document.getElementById("qualFilter").value.toUpperCase();
 
       const filtered = ALL_MOVIES.filter(m => {
         const matchText = !q || (m.title && m.title.toLowerCase().includes(q));
-        const matchYear = !y || String(m.year || "") === y || (m.title && m.title.includes(y));
+        const matchYear = !y || String(m.year || "").includes(y) || (m.title && m.title.includes(y));
         const matchLang = !l || (m.language && m.language.toLowerCase().includes(l));
         const matchQual = !ql || (m.badge && m.badge.toUpperCase().includes(ql));
-        return matchText && matchYear && matchLang && matchQual;
+        const cats = Array.isArray(m.categories) ? m.categories.join(" ").toLowerCase() : String(m.categories || "").toLowerCase();
+        const matchCat = !SELECTED_CAT || cats.includes(SELECTED_CAT.toLowerCase()) || (m.title && m.title.toLowerCase().includes(SELECTED_CAT.toLowerCase()));
+        return matchText && matchYear && matchLang && matchQual && matchCat;
       });
       renderGrid(filtered);
     }
 
+    // Category Pill Click
+    document.querySelectorAll(".cat-pill").forEach(pill => {
+      pill.addEventListener("click", () => {
+        document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        SELECTED_CAT = pill.dataset.cat;
+        applyFilters();
+      });
+    });
+
     document.getElementById("homeHeader").addEventListener("click", showHome);
     document.getElementById("searchInput").addEventListener("keyup", applyFilters);
     document.getElementById("searchBtn").addEventListener("click", applyFilters);
-    document.getElementById("yearFilter").addEventListener("change", applyFilters);
+    document.getElementById("yearFilter").addEventListener("input", applyFilters);
     document.getElementById("langFilter").addEventListener("change", applyFilters);
     document.getElementById("qualFilter").addEventListener("change", applyFilters);
 
@@ -403,7 +444,6 @@
       else applyFilters();
     });
 
-    // Start loading immediately
     loadMoviesFromDB();
   </script>
 </body>
